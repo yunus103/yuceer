@@ -58,7 +58,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
              <div className="text-center">
                 <h3 className="text-2xl font-bold mb-4">Bu hizmet için teklif almak ister misiniz?</h3>
                 <Link href="/iletisim">
-                   <Button size="lg" className="bg-primary text-white hover:bg-primary/90 px-8 py-6 text-lg">
+                   <Button size="lg" className="bg-primary text-white hover:bg-primary-dark px-8 py-6 text-lg">
                       Hemen İletişime Geçin
                    </Button>
                 </Link>

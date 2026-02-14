@@ -45,7 +45,7 @@ export default function Navbar({ logo }: NavbarProps) {
       <header
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b',
-          showBackground ? 'bg-navbar-bg shadow-md py-2 md:py-3 border-white/5 opacity-99' : 'bg-transparent py-4 md:py-6 border-transparent'
+          showBackground ? 'bg-dark-bg shadow-md py-2 md:py-3 border-white/5 opacity-99' : 'bg-transparent py-4 md:py-6 border-transparent'
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
@@ -138,7 +138,7 @@ export default function Navbar({ logo }: NavbarProps) {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 bottom-0 w-[280px] bg-navbar-bg z-50 p-6 shadow-2xl md:hidden flex flex-col"
+              className="fixed right-0 top-0 bottom-0 w-[280px] bg-dark-bg z-50 p-6 shadow-2xl md:hidden flex flex-col"
             >
               <div className="flex justify-end mb-8">
               </div>

@@ -40,7 +40,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const product = await getProduct(slug)
 
   return (
-    <div className="bg-gray-50 min-h-screen py-32">
+    <div className="bg-muted min-h-screen py-32">
       <div className="container mx-auto px-4">
         <div className="bg-white rounded-2xl shadow-sm border p-6 md:p-12">
            <div className="grid md:grid-cols-2 gap-12">
@@ -77,7 +77,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
                  <div className="flex flex-col sm:flex-row gap-4">
                     <Link href="/iletisim" className="flex-1">
-                       <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-lg">
+                       <Button size="lg" className="w-full bg-primary hover:bg-primary-dark text-white py-6 text-lg">
                           Fiyat Teklifi Al
                        </Button>
                     </Link>

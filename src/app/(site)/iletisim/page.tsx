@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 
 export default function ContactPage() {
   return (
-    <div className="bg-gray-50 min-h-screen py-32">
+    <div className="bg-muted min-h-screen py-32">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-6">İletişim</h1>
@@ -74,7 +74,7 @@ export default function ContactPage() {
                        <textarea className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent h-40 resize-none" placeholder="Talebiniz veya sorunuz..." />
                     </div>
                     <div className="md:col-span-2">
-                       <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-white py-4 text-base">Mesajı Gönder</Button>
+                       <Button size="lg" className="w-full bg-primary hover:bg-primary-dark text-white py-4 text-base">Mesajı Gönder</Button>
                     </div>
                  </form>
               </div>

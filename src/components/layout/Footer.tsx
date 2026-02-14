@@ -17,7 +17,7 @@ export default async function Footer() {
 
 
   return (
-    <footer className="bg-navbar-bg text-white pt-16 pb-8 border-t border-white/5 relative overflow-hidden">
+    <footer className="bg-dark-bg text-white pt-16 pb-8 border-t border-white/5 relative overflow-hidden">
         {/* Background Pattern - subtle rings or texture can be added here if needed */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 

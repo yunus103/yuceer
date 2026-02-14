@@ -28,7 +28,7 @@ export default async function ProductsPage({
   })
 
   return (
-    <div className="bg-gray-50 min-h-screen py-32"> {/* Increased padding-top for fixed navbar */}
+    <div className="bg-muted min-h-screen py-32"> {/* Increased padding-top for fixed navbar */}
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-12 text-center md:text-left">

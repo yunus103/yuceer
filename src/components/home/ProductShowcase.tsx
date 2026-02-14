@@ -33,11 +33,11 @@ const products = [
 
 export default function ProductShowcase() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-muted">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <span className="text-accent font-bold tracking-wider uppercase text-sm">Ürünlerimiz</span>
+            <span className="text-primary font-bold tracking-wider uppercase text-sm">Ürünlerimiz</span>
             <h2 className="text-3xl md:text-4xl font-bold mt-2 text-gray-900">Öne Çıkan Ürünler</h2>
           </div>
           <Link href="/urunler" className="hidden md:block">

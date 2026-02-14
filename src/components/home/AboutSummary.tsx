@@ -24,7 +24,7 @@ export default function AboutSummary() {
           {/* Right Column: Content */}
           <div className="pt-8">
             <ScrollAnimation delay={0.2}>
-              <span className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-6 block">KURUMSAL</span>
+              <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-6 block">KURUMSAL</span>
               <h2 className="text-4xl md:text-5xl lg:text-5xl font-bold mb-8 text-gray-900 leading-[1.1] tracking-tight uppercase">
                 GÜVENİLİR KERESTE HİZMETLERİ VE <br />
                 <span className="text-gray-400">KUSURSUZ İŞÇİLİK.</span>
@@ -38,7 +38,7 @@ export default function AboutSummary() {
               {/* Bottom Images & Badge */}
               <div className="relative grid grid-cols-2 gap-6 mt-12">
                  {/* Experience Badge - Absolute positioned similar to the design */}
-                 <div className="absolute -top-16 -right-4 md:-right-8 z-20 w-32 h-32 md:w-40 md:h-40 rounded-full bg-[#bfb498] text-white flex flex-col items-center justify-center text-center shadow-xl border-4 border-white">
+                 <div className="absolute -top-16 -right-4 md:-right-8 z-20 w-32 h-32 md:w-40 md:h-40 rounded-full bg-primary text-white flex flex-col items-center justify-center text-center shadow-xl border-4 border-white">
                     <span className="text-4xl md:text-5xl font-bold leading-none">30</span>
                     <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider mt-1 px-2 leading-tight">Yıllık<br/>Tecrübe</span>
                  </div>
