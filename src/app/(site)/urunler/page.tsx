@@ -14,13 +14,12 @@ const allProducts = [
   { id: 8, title: 'Çam Lambiri Extra', category: 'lambiri', woodType: 'cam', image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000' },
 ]
 
-export default function ProductsPage({
+export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: { category?: string; woodType?: string }
+  searchParams: Promise<{ category?: string; woodType?: string }>
 }) {
-  const categoryFilter = searchParams.category
-  const woodTypeFilter = searchParams.woodType
+  const { category: categoryFilter, woodType: woodTypeFilter } = await searchParams;
 
   const filteredProducts = allProducts.filter((product) => {
     if (categoryFilter && product.category !== categoryFilter) return false

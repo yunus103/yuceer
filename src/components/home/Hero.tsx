@@ -55,7 +55,7 @@ export default function Hero({ data }: HeroProps) {
            
            <div className="flex flex-col sm:flex-row gap-6 items-center animate-fade-in-up delay-200">
              <Link href={ctaButton.link || "/iletisim"}>
-               <Button size="lg" className="rounded-full bg-[#c05e3e] hover:bg-[#a04e33] text-white px-8 py-6 text-sm font-bold tracking-widest uppercase border-none">
+               <Button size="lg" className="rounded-full bg-accent hover:bg-accent-hover text-white px-8 py-6 text-sm font-bold tracking-widest uppercase border-none">
                  {ctaButton.text}
                </Button>
              </Link>

@@ -1,76 +1,160 @@
 import Link from 'next/link'
-import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail } from 'lucide-react'
+import Image from 'next/image'
+import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail, ArrowUp } from 'lucide-react'
+import { client } from "@/sanity/lib/client";
+import { SETTINGS_QUERY } from "@/sanity/lib/queries";
 
-export default function Footer() {
+export default async function Footer() {
+  const settings = await client.fetch(SETTINGS_QUERY);
+  
+  // Fallbacks
+  const siteTitle = settings?.siteTitle || "YÜCEER KERESTE";
+  const logoUrl = settings?.logo;
+  const address = settings?.contact?.address || "Keresteciler Sitesi, No: 123, Ostim, Ankara, Türkiye";
+  const phone = settings?.contact?.phone || "+90 312 123 45 67";
+  const email = settings?.contact?.email || "info@yuceerkereste.com";
+  const socials = settings?.socials || [];
+
+
   return (
-    <footer className="bg-gray-900 text-white pt-16 pb-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Column 1: About */}
-          <div>
-            <h3 className="text-xl font-bold mb-4 text-primary">YÜCEER KERESTE</h3>
-            <p className="text-gray-400 mb-6 leading-relaxed">
-              Yılların verdiği tecrübe ile inşaatlık ve dekoratif kereste ihtiyaçlarınızda yanınızdayız. Kalite ve güvenin adresi.
+    <footer className="bg-navbar-bg text-white pt-16 pb-8 border-t border-white/5 relative overflow-hidden">
+        {/* Background Pattern - subtle rings or texture can be added here if needed */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-12">
+          
+          {/* Column 1: Brand & Description (Lumbert Style: Left aligned, large text) */}
+          <div className="lg:col-span-5 space-y-8">
+            <Link href="/" className="inline-block">
+               {logoUrl ? (
+                   <div className="relative h-16 w-48">
+                       <Image 
+                           src={logoUrl} 
+                           alt={siteTitle} 
+                           fill 
+                           className="object-contain object-left" 
+                       />
+                   </div>
+               ) : (
+                   <h2 className="text-3xl font-bold tracking-widest text-white">{siteTitle}</h2>
+               )}
+            </Link>
+            
+            <h3 className="text-2xl md:text-3xl font-bold leading-tight text-white/90 max-w-md">
+              ESTETİK YAPILAR İÇİN <br/>
+              <span className="text-primary">DOĞAL KERESTE</span>
+            </h3>
+
+            <p className="text-sm text-gray-400 leading-relaxed max-w-sm">
+              Modern üretim tesislerimizde işlenen, fırınlanmış ve dayanıklı kereste ürünleri ile projelerinize değer katıyoruz.
             </p>
-            <div className="flex gap-4">
-              <Link href="#" className="p-2 bg-gray-800 rounded-full hover:bg-primary transition-colors">
-                <Instagram className="w-5 h-5" />
-              </Link>
-              <Link href="#" className="p-2 bg-gray-800 rounded-full hover:bg-primary transition-colors">
-                <Facebook className="w-5 h-5" />
-              </Link>
-              <Link href="#" className="p-2 bg-gray-800 rounded-full hover:bg-primary transition-colors">
-                <Linkedin className="w-5 h-5" />
-              </Link>
+
+            {/* Socials */}
+            <div className="flex gap-4 pt-4">
+              {socials.length > 0 ? (
+                  socials.map((social: any, idx: number) => (
+                    <Link key={idx} href={social.url} target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-primary hover:text-white transition-all duration-300 text-gray-400">
+                        {/* Simple mapping for common icons, fallback to Link icon */}
+                        {social.platform.toLowerCase().includes('instagram') ? <Instagram className="w-5 h-5" /> :
+                         social.platform.toLowerCase().includes('facebook') ? <Facebook className="w-5 h-5" /> :
+                         social.platform.toLowerCase().includes('linkedin') ? <Linkedin className="w-5 h-5" /> :
+                         <Mail className="w-5 h-5" />}
+                    </Link>
+                  ))
+              ) : (
+                <>
+                  <Link href="#" className="p-3 bg-white/5 rounded-full hover:bg-primary hover:text-white transition-all duration-300 text-gray-400">
+                    <Instagram className="w-5 h-5" />
+                  </Link>
+                  <Link href="#" className="p-3 bg-white/5 rounded-full hover:bg-primary hover:text-white transition-all duration-300 text-gray-400">
+                    <Facebook className="w-5 h-5" />
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 
-          {/* Column 2: Quick Links */}
-          <div>
-            <h4 className="text-lg font-bold mb-4">Hızlı Bağlantılar</h4>
-            <ul className="space-y-2">
-              <li><Link href="/" className="text-gray-400 hover:text-white transition-colors">Anasayfa</Link></li>
-              <li><Link href="/hakkimizda" className="text-gray-400 hover:text-white transition-colors">Hakkımızda</Link></li>
-              <li><Link href="/hizmetler" className="text-gray-400 hover:text-white transition-colors">Hizmetler</Link></li>
-              <li><Link href="/referanslar" className="text-gray-400 hover:text-white transition-colors">Referanslar</Link></li>
-              <li><Link href="/iletisim" className="text-gray-400 hover:text-white transition-colors">İletişim</Link></li>
-            </ul>
-          </div>
+          {/* Spacer Column */}
+          <div className="hidden lg:block lg:col-span-2"></div>
 
-          {/* Column 3: Products */}
-          <div>
-            <h4 className="text-lg font-bold mb-4">Ürünlerimiz</h4>
-            <ul className="space-y-2">
-              <li><Link href="/urunler" className="text-gray-400 hover:text-white transition-colors">İnşaatlık Kereste</Link></li>
-              <li><Link href="/urunler" className="text-gray-400 hover:text-white transition-colors">Dekoratif Ahşap</Link></li>
-              <li><Link href="/urunler" className="text-gray-400 hover:text-white transition-colors">Palet Kerestesi</Link></li>
-              <li><Link href="/urunler" className="text-gray-400 hover:text-white transition-colors">OSB & Kontrplak</Link></li>
-              <li><Link href="/urunler" className="text-gray-400 hover:text-white transition-colors">Tüm Ürünler</Link></li>
-            </ul>
-          </div>
-
-          {/* Column 4: Contact */}
-          <div>
-            <h4 className="text-lg font-bold mb-4">İletişim</h4>
+          {/* Column 2: Navigation (Explore) */}
+          <div className="lg:col-span-2">
+            <h4 className="text-sm font-bold tracking-[0.2em] text-primary uppercase mb-8">Keşfet</h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-primary shrink-0 mt-1" />
-                <span className="text-gray-400">Keresteciler Sitesi, No: 123, Ostim, Ankara, Türkiye</span>
+              {[
+                  { label: 'Anasayfa', href: '/' },
+                  { label: 'Kurumsal', href: '/hakkimizda' },
+                  { label: 'Ürünler', href: '/urunler' },
+                  { label: 'Hizmetler', href: '/hizmetler' },
+                  { label: 'Referanslar', href: '/referanslar' },
+                  { label: 'İletişim', href: '/iletisim' },
+              ].map((item) => (
+                  <li key={item.href}>
+                      <Link href={item.href} className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"/>
+                          {item.label}
+                      </Link>
+                  </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Contact Info */}
+          <div className="lg:col-span-3">
+            <h4 className="text-sm font-bold tracking-[0.2em] text-primary uppercase mb-6">İletişim</h4>
+            <ul className="space-y-6">
+              <li className="group">
+                 <div className="flex items-start gap-3">
+                    <div className="p-2 bg-white/5 rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <MapPin className="w-4 h-4" />
+                    </div>
+                    <div>
+                        <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Mərkez Ofis</span>
+                        <p className="text-gray-300 leading-relaxed text-xs">{address}</p>
+                    </div>
+                 </div>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-primary shrink-0" />
-                <span className="text-gray-400">+90 312 123 45 67</span>
+              <li className="group">
+                 <div className="flex items-start gap-3">
+                    <div className="p-2 bg-white/5 rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <Phone className="w-4 h-4" />
+                    </div>
+                    <div>
+                        <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Telefon</span>
+                        <a href={`tel:${phone}`} className="text-gray-300 hover:text-white transition-colors block text-xs">{phone}</a>
+                    </div>
+                 </div>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-primary shrink-0" />
-                <span className="text-gray-400">info@yuceerkereste.com</span>
+              <li className="group">
+                 <div className="flex items-start gap-3">
+                    <div className="p-2 bg-white/5 rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <Mail className="w-4 h-4" />
+                    </div>
+                    <div>
+                        <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">E-posta</span>
+                        <a href={`mailto:${email}`} className="text-gray-300 hover:text-white transition-colors block text-xs">{email}</a>
+                    </div>
+                 </div>
               </li>
             </ul>
           </div>
+
         </div>
 
-        <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} Yüceer Kereste. Tüm hakları saklıdır.</p>
+        {/* Bottom Bar */}
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-gray-500 text-sm">
+            &copy; {new Date().getFullYear()} {siteTitle}. Tüm hakları saklıdır.
+          </p>
+          
+          <button 
+             className="w-10 h-10 rounded-full bg-white/5 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 group"
+             title="Yukarı Çık"
+            //  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} // Client component needed for onClick, keeping it simple server component for now or standard link
+          >
+             <ArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
+          </button>
         </div>
       </div>
     </footer>

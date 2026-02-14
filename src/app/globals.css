@@ -2,16 +2,24 @@
 
 :root {
   --background: #ffffff;
+  --background-green: #2e3e34;
   --foreground: #171717;
   --primary: #207c3d;
   --navbar-bg: #1e2721;
+  --footer-bg: #2e3e34;
+  --accent: #c05e3e;
+  --accent-hover: #a04e33;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-green: var(--background-green);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-navbar-bg: var(--navbar-bg);
+  --color-footer-bg: var(--footer-bg);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --font-sans: var(--font-inter);
 
   --animate-fade-in-up: fade-in-up 0.8s ease-out forwards;

@@ -23,8 +23,9 @@ const getService = async (slug: string) => {
   }
 }
 
-export default async function ServiceDetailPage({ params }: { params: { slug: string } }) {
-  const service = await getService(params.slug)
+export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const service = await getService(slug)
 
   return (
     <div className="bg-white min-h-screen py-32">
