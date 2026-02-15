@@ -53,10 +53,12 @@ export const ALL_PRODUCTS_QUERY = defineQuery(`
 export const HOME_PAGE_QUERY = defineQuery(`
   *[_type == "homePage"][0] {
     hero {
-      eyebrow,
-      title,
-      "backgroundImage": backgroundImage.asset->url,
-      ctaButton,
+      slides[] {
+        eyebrow,
+        title,
+        "backgroundImage": backgroundImage.asset->url,
+        ctaButton
+      },
       secondaryButton
     }
   }

@@ -13,40 +13,48 @@ export const homePage = defineType({
       type: "object",
       fields: [
         defineField({
-          name: "eyebrow",
-          title: "Üst Başlık (Küçük Yazı)",
-          type: "string",
-        }),
-        defineField({
-          name: "title",
-          title: "Ana Başlık",
-          type: "text",
-          rows: 3,
-          description: "Satır atlamak için Enter tuşunu kullanabilirsiniz.",
-        }),
-        defineField({
-          name: "backgroundImage",
-          title: "Arkaplan Resmi",
-          type: "image",
-          options: { hotspot: true },
-        }),
-        defineField({
-          name: "ctaButton",
-          title: "Birinci Buton (CTA)",
-          type: "object",
-          fields: [
-            { name: "text", title: "Buton Metni", type: "string" },
+          name: "slides",
+          title: "Slaytlar",
+          type: "array",
+          of: [
             {
-              name: "link",
-              title: "Buton Linki",
-              type: "string",
-              description: "Örnek: /iletisim",
+              type: "object",
+              name: "slide",
+              title: "Slayt",
+              fields: [
+                {
+                  name: "backgroundImage",
+                  title: "Arkaplan Resmi",
+                  type: "image",
+                  options: { hotspot: true },
+                },
+                {
+                  name: "eyebrow",
+                  title: "Üst Başlık (Küçük Yazı)",
+                  type: "string",
+                },
+                {
+                  name: "title",
+                  title: "Ana Başlık",
+                  type: "text",
+                  rows: 3,
+                },
+                {
+                  name: "ctaButton",
+                  title: "Buton",
+                  type: "object",
+                  fields: [
+                    { name: "text", title: "Buton Metni", type: "string" },
+                    { name: "link", title: "Buton Linki", type: "string" },
+                  ],
+                },
+              ],
             },
           ],
         }),
         defineField({
           name: "secondaryButton",
-          title: "İkinci Buton",
+          title: "İkinci Buton (Tüm Slaytlar İçin Ortak)",
           type: "object",
           fields: [
             { name: "text", title: "Buton Metni", type: "string" },
@@ -54,7 +62,7 @@ export const homePage = defineType({
               name: "link",
               title: "Buton Linki",
               type: "string",
-              description: "Örnek: /hakkimizda",
+              description: "Örnek: #",
             },
           ],
         }),
