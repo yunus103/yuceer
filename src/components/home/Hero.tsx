@@ -186,7 +186,7 @@ export default function Hero({ data }: HeroProps) {
           className="h-full bg-accent"
           initial={{ width: "0%" }}
           animate={{ width: isPaused ? "0%" : "100%" }}
-          transition={{ duration: isPaused ? 0 : 7, ease: "linear" }}
+          transition={{ duration: isPaused ? 0 : 5, ease: "linear" }}
         />
       </div>
     </section>

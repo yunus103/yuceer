@@ -68,5 +68,35 @@ export const homePage = defineType({
         }),
       ],
     }),
+    defineField({
+      name: "aboutSection",
+      title: "Hakkımızda Bölümü",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Bölüm Başlığı",
+          type: "string",
+          initialValue: "GÜVENİLİR KERESTE HİZMETLERİ VE KUSURSUZ İŞÇİLİK.",
+        }),
+        defineField({
+          name: "summary",
+          title: "Bölüm Özeti",
+          type: "text",
+          rows: 4,
+          initialValue:
+            "Kapsamlı hizmetlerimiz, proje planlamasından üretime, sonlandırmadan montaja kadar her aşamayı içerir. Böylece müşterilerimiz sadece tasarıma ve sonuca odaklanabilir.",
+        }),
+        defineField({
+          name: "primaryButton",
+          title: "Buton",
+          type: "object",
+          fields: [
+            { name: "text", title: "Buton Metni", type: "string" },
+            { name: "link", title: "Buton Linki", type: "string" },
+          ],
+        }),
+      ],
+    }),
   ],
 });

@@ -51,15 +51,22 @@ export const ALL_PRODUCTS_QUERY = defineQuery(`
 `);
 
 export const HOME_PAGE_QUERY = defineQuery(`
-  *[_type == "homePage"][0] {
-    hero {
-      slides[] {
-        eyebrow,
-        title,
-        "backgroundImage": backgroundImage.asset->url,
-        ctaButton
+  {
+    "home": *[_type == "homePage"][0] {
+      hero {
+        slides[] {
+          eyebrow,
+          title,
+          "backgroundImage": backgroundImage.asset->url,
+          ctaButton
+        },
+        secondaryButton
       },
-      secondaryButton
+      aboutSection
+    },
+    "about": *[_type == "aboutPage"][0] {
+      "heroImage": heroImage.asset->url,
+      foundingYear
     }
   }
 `);

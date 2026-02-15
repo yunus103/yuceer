@@ -13,8 +13,11 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Hero data={homeData?.hero} />
-      <AboutSummary />
+      <Hero data={homeData?.home?.hero} />
+      <AboutSummary 
+        data={homeData?.home?.aboutSection} 
+        aboutPage={homeData?.about} 
+      />
       <WhyUs />
       <ProductShowcase />
       <ServicesSlider />
