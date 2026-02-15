@@ -57,7 +57,7 @@ export default function Hero({ data }: HeroProps) {
 
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(nextSlide, 6000); // 6 seconds per slide
+    const interval = setInterval(nextSlide, 5000); // 5 seconds per slide
     return () => clearInterval(interval);
   }, [nextSlide, isPaused]);
 

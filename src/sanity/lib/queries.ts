@@ -70,3 +70,32 @@ export const CATEGORIES_QUERY = defineQuery(
 export const WOOD_TYPES_QUERY = defineQuery(
   `*[_type == "woodType"] {title, "slug": slug.current}`,
 );
+
+export const ABOUT_PAGE_QUERY = defineQuery(`
+  *[_type == "aboutPage"][0] {
+    title,
+    "heroImage": heroImage.asset->url,
+    introduction,
+    foundingYear,
+    historyHeading,
+    "historyImage": historyImage.asset->url,
+    historyQuote,
+    history,
+    mission,
+    vision,
+    stats,
+    certificates[] {
+      "url": asset->url,
+      title
+    },
+    logistics {
+      title,
+      description,
+      "image": image.asset->url
+    },
+    seo {
+      metaTitle,
+      metaDescription
+    }
+  }
+`);

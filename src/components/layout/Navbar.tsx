@@ -13,7 +13,6 @@ const navLinks = [
   { href: '/hakkimizda', label: 'Kurumsal' },
   { href: '/urunler', label: 'Ürünler' },
   { href: '/hizmetler', label: 'Hizmetler' },
-  { href: '/referanslar', label: 'Referanslar' },
   { href: '/iletisim', label: 'İletişim' },
 ]
 
@@ -73,7 +72,7 @@ export default function Navbar({ logo }: NavbarProps) {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-10">
+          <nav className="hidden md:flex items-center gap-8 lg:gap-10">
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
               return (
