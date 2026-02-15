@@ -3,22 +3,25 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 
-// Mock logos
-const logos = [
-   // Using placeholder images for logos
-   'https://via.placeholder.com/150x50/e5e7eb/9ca3af?text=LOGO+1',
-   'https://via.placeholder.com/150x50/e5e7eb/9ca3af?text=LOGO+2',
-   'https://via.placeholder.com/150x50/e5e7eb/9ca3af?text=LOGO+3',
-   'https://via.placeholder.com/150x50/e5e7eb/9ca3af?text=LOGO+4',
-   'https://via.placeholder.com/150x50/e5e7eb/9ca3af?text=LOGO+5',
-   'https://via.placeholder.com/150x50/e5e7eb/9ca3af?text=LOGO+6',
-]
+interface Reference {
+  _id: string
+  companyName?: string
+  logo?: string
+  url?: string
+}
 
-const duplicatedLogos = [...logos, ...logos]
+interface ReferencesMarqueeProps {
+  items?: Reference[]
+}
 
 const MotionDiv = motion.create('div')
 
-export default function ReferencesMarquee() {
+export default function ReferencesMarquee({ items }: ReferencesMarqueeProps) {
+  // If no items, don't render the section at all or show a placeholder
+  if (!items || items.length === 0) return null;
+
+  const duplicatedItems = [...items, ...items]
+
   return (
     <section className="py-16 bg-white border-y border-gray-100 overflow-hidden">
       <div className="container mx-auto px-4 text-center mb-10">
@@ -32,19 +35,24 @@ export default function ReferencesMarquee() {
            transition={{ 
              repeat: Infinity, 
              ease: "linear", 
-             duration: 20 
+             duration: 30 
            }}
         >
-           {duplicatedLogos.map((logo, index) => (
-             <div key={index} className="relative w-40 h-12 flex items-center justify-center grayscale opacity-60 hover:opacity-100 transition-all duration-300">
-                {/* Using a simple text placeholder if image fails, or just the image */}
-                <Image 
-                   src={logo} 
-                   alt={`Referans ${index}`} 
-                   fill
-                   sizes="160px"
-                   className="object-contain filter grayscale contrast-125"
-                />
+           {duplicatedItems.map((item, index) => (
+             <div key={`${item._id}-${index}`} className="relative w-40 h-10 flex items-center justify-center grayscale opacity-60 hover:opacity-100 transition-all duration-300">
+                {item.logo ? (
+                  <Image 
+                     src={item.logo} 
+                     alt={item.companyName || 'Referans'} 
+                     fill
+                     sizes="160px"
+                     className="object-contain filter grayscale contrast-125"
+                  />
+                ) : (
+                  <span className="text-gray-400 font-bold tracking-tighter uppercase whitespace-nowrap">
+                    {item.companyName}
+                  </span>
+                )}
              </div>
            ))}
         </MotionDiv>

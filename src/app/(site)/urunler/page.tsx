@@ -1,18 +1,13 @@
 import { Suspense } from 'react'
 import ProductFilter from '@/components/products/ProductFilter'
 import ProductCard from '@/components/products/ProductCard'
+import { client } from '@/sanity/lib/client'
+import { ALL_PRODUCTS_QUERY } from '@/sanity/lib/queries'
 
-// Mock Data
-const allProducts = [
-  { id: 1, title: 'İnşaatlık Kereste (Sarıçam)', category: 'insaatlik', woodType: 'cam', image: 'https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?q=80&w=2039' },
-  { id: 2, title: 'İnşaatlık Kereste (Ladin)', category: 'insaatlik', woodType: 'ladin', image: 'https://images.unsplash.com/photo-1545622616-24eb22442654?q=80&w=2070' },
-  { id: 3, title: 'Silinmiş Çam Kereste', category: 'dekoratif', woodType: 'cam', image: 'https://images.unsplash.com/photo-1621379963694-8260da30fae3?q=80&w=2070' },
-  { id: 4, title: 'Meşe Masif Panel', category: 'dekoratif', woodType: 'mese', image: 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?q=80&w=2070' },
-  { id: 5, title: 'OSB-3 Levha 11mm', category: 'osb', woodType: '', image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070' },
-  { id: 6, title: 'Kavak Kontrplak', category: 'osb', woodType: 'kavak', image: 'https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?q=80&w=2070' },
-  { id: 7, title: 'Euro Palet', category: 'palet', woodType: 'cam', image: 'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?q=80&w=2070' },
-  { id: 8, title: 'Çam Lambiri Extra', category: 'lambiri', woodType: 'cam', image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000' },
-]
+export const metadata = {
+  title: 'Ürünlerimiz | Yüceer Kereste',
+  description: 'İnşaatlık keresteden dekoratif ürünlere, geniş ürün yelpazemizle projeleriniz için en kaliteli çözümleri sunuyoruz.',
+}
 
 export default async function ProductsPage({
   searchParams,
@@ -20,15 +15,19 @@ export default async function ProductsPage({
   searchParams: Promise<{ category?: string; woodType?: string }>
 }) {
   const { category: categoryFilter, woodType: woodTypeFilter } = await searchParams;
+  const products = await client.fetch(ALL_PRODUCTS_QUERY);
 
-  const filteredProducts = allProducts.filter((product) => {
-    if (categoryFilter && product.category !== categoryFilter) return false
-    if (woodTypeFilter && product.woodType !== woodTypeFilter) return false
+  // Filter products based on category and woodType from URL
+  const filteredProducts = products.filter((product: any) => {
+    // Note: We compare against slugs or titles depending on what ProductFilter provides
+    // Typically slugs are safer. Assuming ProductFilter uses slugs.
+    if (categoryFilter && product.category?.toLowerCase() !== categoryFilter.toLowerCase()) return false
+    if (woodTypeFilter && product.woodType?.toLowerCase() !== woodTypeFilter.toLowerCase()) return false
     return true
   })
 
   return (
-    <div className="bg-muted min-h-screen py-32"> {/* Increased padding-top for fixed navbar */}
+    <div className="bg-muted min-h-screen py-32">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-12 text-center md:text-left">
@@ -50,21 +49,21 @@ export default async function ProductsPage({
            <div className="lg:w-3/4">
               {filteredProducts.length > 0 ? (
                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredProducts.map((product) => (
+                    {filteredProducts.map((product: any) => (
                        <ProductCard
-                          key={product.id}
-                          id={product.id}
+                          key={product._id}
+                          id={product.slug}
                           title={product.title}
-                          category={product.category.toUpperCase()} // Display purpose
-                          woodType={product.woodType.toUpperCase()}
-                          image={product.image}
+                          category={product.category}
+                          woodType={product.woodType}
+                          image={product.mainImage}
                        />
                     ))}
                  </div>
               ) : (
                  <div className="text-center py-20 bg-white rounded-xl shadow-sm">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">Ürün Bulunamadı</h3>
-                    <p className="text-gray-500">Seçtiğiniz kriterlere uygun ürün bulunmamaktadır.</p>
+                    <p className="text-gray-500">Seçtiğimiz kriterlere uygun ürün bulunmamaktadır.</p>
                  </div>
               )}
            </div>

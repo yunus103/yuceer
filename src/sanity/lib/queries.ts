@@ -67,6 +67,26 @@ export const HOME_PAGE_QUERY = defineQuery(`
     "about": *[_type == "aboutPage"][0] {
       "heroImage": heroImage.asset->url,
       foundingYear
+    },
+    "products": *[_type == "product"] | order(_createdAt desc)[0...4] {
+      _id,
+      title,
+      "category": category->title,
+      "mainImage": mainImage.asset->url
+    },
+    "services": *[_type == "service"] | order(title asc) {
+      _id,
+      title,
+      "slug": slug.current,
+      summary,
+      "icon": icon.asset->url,
+      "mainImage": mainImage.asset->url
+    },
+    "references": *[_type == "companyReference"] {
+      _id,
+      companyName,
+      "logo": logo.asset->url,
+      url
     }
   }
 `);
@@ -103,6 +123,22 @@ export const ABOUT_PAGE_QUERY = defineQuery(`
     seo {
       metaTitle,
       metaDescription
+    }
+  }
+`);
+
+export const PRODUCT_BY_SLUG_QUERY = defineQuery(`
+  *[_type == "product" && slug.current == $slug][0] {
+    _id,
+    title,
+    description,
+    "category": category->title,
+    "woodType": woodType->title,
+    "mainImage": mainImage.asset->url,
+    "gallery": gallery[].asset->url,
+    specs[] {
+      label,
+      value
     }
   }
 `);

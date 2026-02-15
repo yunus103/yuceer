@@ -19,10 +19,10 @@ export default async function Home() {
         aboutPage={homeData?.about} 
       />
       <WhyUs />
-      <ProductShowcase />
-      <ServicesSlider />
-      <ReferencesMarquee />
-      <ContactSection />
+      <ProductShowcase items={homeData?.products} />
+      <ServicesSlider items={homeData?.services} />
+      <ReferencesMarquee items={homeData?.references} />
+      <ContactSection backgroundImage={homeData?.about?.heroImage} />
     </div>
   )
 }

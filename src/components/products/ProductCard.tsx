@@ -3,11 +3,11 @@ import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-interface ProductCardProps { // Define props interface
-  id: string | number
+interface ProductCardProps { 
+  id: string
   title: string
-  category: string
-  image: string
+  category?: string
+  image?: string
   woodType?: string
   className?: string
 }
@@ -15,17 +15,25 @@ interface ProductCardProps { // Define props interface
 export default function ProductCard({ id, title, category, image, woodType, className }: ProductCardProps) {
   return (
     <div className={cn("group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100", className)}>
-      <div className="relative h-64 overflow-hidden">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
-        />
+      <div className="relative h-64 overflow-hidden bg-gray-100">
+        {image ? (
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-400 font-medium">
+            Resim Yok
+          </div>
+        )}
         <div className="absolute top-4 left-4 flex gap-2">
-           <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary uppercase tracking-wide shadow-sm">
-             {category}
-           </span>
+           {category && (
+             <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary uppercase tracking-wide shadow-sm">
+               {category}
+             </span>
+           )}
            {woodType && (
              <span className="bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-white uppercase tracking-wide shadow-sm">
                {woodType}

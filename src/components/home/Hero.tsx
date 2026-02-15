@@ -49,24 +49,23 @@ const DEFAULT_SLIDES: Slide[] = [
 export default function Hero({ data }: HeroProps) {
   const slides = (data?.slides && data.slides.length > 0) ? data.slides : DEFAULT_SLIDES;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const SLIDE_DURATION = 6000; // 5 seconds per slide (as requested)
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % slides.length);
   }, [slides.length]);
 
   useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(nextSlide, 5000); // 5 seconds per slide
+    const interval = setInterval(nextSlide, SLIDE_DURATION);
     return () => clearInterval(interval);
-  }, [nextSlide, isPaused]);
+  }, [nextSlide, currentIndex]); // currentIndex ensures key change resets the timer
 
   const goToSlide = (index: number) => {
+    if (index === currentIndex) return;
     setCurrentIndex(index);
-    setIsPaused(true);
-    // Resume auto-play after 10 seconds of inactivity if wanted, 
-    // or just leave it paused. Let's resume after 10s.
-    setTimeout(() => setIsPaused(false), 10000);
+    // Note: isPaused is now mainly handled by hover, but we can temporarily 
+    // pause it if we want extra duration on click. 
+    // For now, hover-to-pause is cleaner.
   };
 
   const currentSlide = slides[currentIndex];
@@ -76,7 +75,9 @@ export default function Hero({ data }: HeroProps) {
   const secondaryButton = data?.secondaryButton ?? { text: "Tanıtım Filmini İzle", link: "#" };
 
   return (
-    <section className="relative h-screen min-h-[600px] flex items-center overflow-hidden bg-black">
+    <section 
+      className="relative h-screen min-h-[600px] flex items-center overflow-hidden bg-black"
+    >
       {/* Background Slides */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence initial={false}>
@@ -182,11 +183,11 @@ export default function Hero({ data }: HeroProps) {
       {/* Slide Progress Indicator (Optional but premium) */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10 z-20">
         <motion.div 
-          key={currentIndex + (isPaused ? '-paused' : '')}
+          key={currentIndex}
           className="h-full bg-accent"
           initial={{ width: "0%" }}
-          animate={{ width: isPaused ? "0%" : "100%" }}
-          transition={{ duration: isPaused ? 0 : 5, ease: "linear" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: SLIDE_DURATION / 1000, ease: "linear" }}
         />
       </div>
     </section>
