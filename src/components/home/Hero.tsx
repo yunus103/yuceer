@@ -1,194 +1,112 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/Button'
-
-interface Slide {
-  eyebrow?: string
-  title?: string
-  backgroundImage?: string
-  ctaButton?: {
-    text: string
-    link: string
-  }
-}
+import { ArrowRight } from 'lucide-react'
 
 interface HeroProps {
   data?: {
-    slides?: Slide[]
-    secondaryButton?: {
-      text: string
-      link: string
+    heroVideo?: string
+    heroPoster?: string
+    heroTitle?: string
+    heroSubtitle?: string
+    heroCTA?: {
+      label?: string
+      url?: string
     }
   } | null
 }
 
-const DEFAULT_SLIDES: Slide[] = [
-  {
-    backgroundImage: "https://images.unsplash.com/photo-1579273166152-d725a4e2b755?q=80&w=2068&auto=format&fit=crop",
-    eyebrow: "Malzeme Özelliklerine Saygı Duyan Proje Planlaması",
-    title: "MARANGOZLUK VE KERESTE HİZMETLERİ",
-    ctaButton: { text: "Hemen Teklif Al", link: "/iletisim" }
-  },
-  {
-    backgroundImage: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=2070&auto=format&fit=crop",
-    eyebrow: "Yüksek Kaliteli Ahşap İşçiliği",
-    title: "ESTETİK VE DAYANIKLI KERESTE TASARIMLAR",
-    ctaButton: { text: "Ürünlerimizi İnceleyin", link: "/urunler" }
-  },
-  {
-    backgroundImage: "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?q=80&w=2070&auto=format&fit=crop",
-    eyebrow: "Modern ve Gelenekselin Buluşması",
-    title: "GELECEĞİN YAŞAM ALANLARINI İNŞA EDİYORUZ",
-    ctaButton: { text: "Hizmetlerimizi Görün", link: "/hizmetler" }
-  }
-];
-
 export default function Hero({ data }: HeroProps) {
-  const slides = (data?.slides && data.slides.length > 0) ? data.slides : DEFAULT_SLIDES;
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const SLIDE_DURATION = 6000; // 5 seconds per slide (as requested)
-
-  const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % slides.length);
-  }, [slides.length]);
-
-  useEffect(() => {
-    const interval = setInterval(nextSlide, SLIDE_DURATION);
-    return () => clearInterval(interval);
-  }, [nextSlide, currentIndex]); // currentIndex ensures key change resets the timer
-
-  const goToSlide = (index: number) => {
-    if (index === currentIndex) return;
-    setCurrentIndex(index);
-    // Note: isPaused is now mainly handled by hover, but we can temporarily 
-    // pause it if we want extra duration on click. 
-    // For now, hover-to-pause is cleaner.
-  };
-
-  const currentSlide = slides[currentIndex];
-  const eyebrow = currentSlide.eyebrow || "Malzeme Özelliklerine Saygı Duyan Proje Planlaması";
-  const title = currentSlide.title || "MARANGOZLUK VE KERESTE HİZMETLERİ";
-  const ctaButton = currentSlide.ctaButton || { text: "Hemen Teklif Al", link: "/iletisim" };
-  const secondaryButton = data?.secondaryButton ?? { text: "Tanıtım Filmini İzle", link: "#" };
+  // Safe defaults
+  const posterUrl = data?.heroPoster || "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?q=80&w=2070&auto=format&fit=crop";
+  const title = data?.heroTitle || "GELECEĞİN YAŞAM ALANLARINI İNŞA EDİYORUZ";
+  const subtitle = data?.heroSubtitle || "Doğal ahşabın sıcaklığını ve kalitesini modern yaşam alanlarınıza taşıyoruz.";
+  const ctaLabel = data?.heroCTA?.label || "Hizmetlerimizi İnceleyin";
+  const ctaUrl = data?.heroCTA?.url || "/hizmetler";
 
   return (
-    <section 
-      className="relative h-screen min-h-[600px] flex items-center overflow-hidden bg-black"
-    >
-      {/* Background Slides */}
+    <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-black flex items-center">
+      {/* 
+        1. Poster Image (LCP Optimization) 
+        - Priority=true ensures it loads immediately.
+        - Placeholder="blur" isn't strictly necessary with priority, but good for UX if using local images. For remote, we rely on priority.
+        - Object-cover ensures it covers the area.
+      */}
       <div className="absolute inset-0 z-0">
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="absolute inset-0"
-          >
-            <motion.div 
-               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-               initial={{ scale: 1.1 }}
-               animate={{ scale: 1 }}
-               transition={{ duration: 10, ease: "linear" }}
-               style={{ 
-                 backgroundImage: `url("${currentSlide.backgroundImage}")`,
-               }}
-            />
-            <div className="absolute inset-0 bg-black/50" />
-          </motion.div>
-        </AnimatePresence>
+         <Image 
+            src={posterUrl}
+            alt={title}
+            fill
+            priority
+            className="object-cover w-full h-full"
+            sizes="100vw"
+            quality={90}
+         />
       </div>
 
-      {/* Content */}
-      <div className="container relative z-10 px-4 text-white">
+      {/* 
+        2. Video Background 
+        - Plays inline, muted, loop, autoPlay.
+        - Preload="none" ensures it lazily loads (browser logic).
+        - Z-index needs to be higher than image but lower than overlay/content.
+        - We use a simple fade-in to smoothing transition from poster to video if needed, 
+          but standard method is strictly placing it on top.
+      */}
+      {data?.heroVideo && (
+        <video
+          className="absolute inset-0 z-0 w-full h-full object-cover"
+          poster={posterUrl} // Poster atribute helps browser transition
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none" 
+        >
+          <source src={data.heroVideo} type="video/mp4" />
+        </video>
+      )}
+
+      {/* 
+        3. Overlay 
+        - Darkens the background to ensure text readability.
+        - Z index 1 puts it above video/image.
+      */}
+      <div className="absolute inset-0 z-10 bg-black/50" />
+
+      {/* 
+        4. Content 
+        - Z index 20 puts it above overlay.
+      */}
+      <div className="container relative z-20 px-4 text-white">
         <div className="max-w-4xl">
-           <AnimatePresence mode="wait">
-             <motion.div
-               key={currentIndex}
-               initial={{ opacity: 0, y: 30 }}
-               animate={{ opacity: 1, y: 0 }}
-               exit={{ opacity: 0, y: -30 }}
-               transition={{ 
-                 duration: 0.8, 
-                 delay: 0.2, // Small delay so background starts first
-                 ease: [0.22, 1, 0.36, 1] // Sharp ease out
-               }}
-             >
-                <p className="text-xs md:text-sm font-bold tracking-[0.2em] mb-4 text-gray-300 uppercase">
-                  {eyebrow}
-                </p>
-                <h1 
-                  className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tighter leading-[0.9]"
-                  dangerouslySetInnerHTML={{ 
-                    __html: (title || "").replace(/\n/g, '<br />').replace('KERESTE', '<span class="text-gray-400">KERESTE</span>') 
-                  }}
-                />
-                
-                <div className="flex flex-col sm:flex-row gap-6 items-center">
-                  <Link href={ctaButton.link || "/iletisim"}>
-                    <Button size="lg" className="rounded-full bg-accent hover:bg-accent-hover text-white px-8 py-6 text-sm font-bold tracking-widest uppercase border-none transition-transform hover:scale-105 active:scale-95">
-                      {ctaButton.text}
-                    </Button>
-                  </Link>
-                  
-                  {secondaryButton && (
-                    <button className="flex items-center gap-4 group cursor-pointer">
-                       <div className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300 group-hover:scale-110">
-                          <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-white border-b-[6px] border-b-transparent ml-1 group-hover:border-l-black transition-colors" />
-                       </div>
-                       <span className="text-sm font-bold tracking-wider uppercase group-hover:text-accent transition-colors">{secondaryButton.text}</span>
-                    </button>
-                  )}
-                </div>
-             </motion.div>
-           </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Slider Navigation Dots (Vertical as per user image) */}
-      <div className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-10 items-center">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className="group relative flex items-center justify-center w-4 h-4 transition-all duration-300 cursor-pointer"
-            aria-label={`Go to slide ${index + 1}`}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           >
-            {/* Active Circle Ring - Matching the provided image logic */}
-            {currentIndex === index && (
-              <motion.div
-                layoutId="activeSlideRing"
-                className="absolute border border-white/80 rounded-full"
-                style={{ width: '32px', height: '32px' }}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              />
-            )}
-            
-            {/* Dot */}
-            <div 
-              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                currentIndex === index 
-                  ? 'bg-white scale-125' 
-                  : 'bg-white/30 group-hover:bg-white/60 group-hover:scale-110'
-              }`}
-            />
-          </button>
-        ))}
-      </div>
+             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tighter leading-[1.1]">
+               {title}
+             </h1>
+             <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl leading-relaxed">
+               {subtitle}
+             </p>
 
-      {/* Slide Progress Indicator (Optional but premium) */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10 z-20">
-        <motion.div 
-          key={currentIndex}
-          className="h-full bg-accent"
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: SLIDE_DURATION / 1000, ease: "linear" }}
-        />
+             <motion.div
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+             >
+                <Link href={ctaUrl} className="inline-block">
+                  <Button size="lg" className="rounded-full bg-accent hover:bg-emerald-600 text-white px-8 py-6 text-base font-bold tracking-widest uppercase transition-all hover:scale-105 active:scale-95 group">
+                    {ctaLabel} <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+             </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   )

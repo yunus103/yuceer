@@ -22,13 +22,14 @@ export const HOME_PAGE_QUERY = defineQuery(`
   {
     "home": *[_type == "homePage" && _id == "homePage"][0] {
       hero {
-        slides[] {
-          eyebrow,
-          title,
-          "backgroundImage": backgroundImage.asset->url,
-          ctaButton
-        },
-        secondaryButton
+        "heroVideo": heroVideo.asset->url,
+        "heroPoster": heroPoster.asset->url,
+        heroTitle,
+        heroSubtitle,
+        heroCTA {
+          label,
+          url
+        }
       },
       aboutSection,
       whyChooseUs {

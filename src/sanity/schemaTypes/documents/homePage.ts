@@ -9,61 +9,47 @@ export const homePage = defineType({
   fields: [
     defineField({
       name: "hero",
-      title: "Hero Alanı",
+      title: "Hero Alanı (Video)",
       type: "object",
       fields: [
         defineField({
-          name: "slides",
-          title: "Slaytlar",
-          type: "array",
-          of: [
-            {
-              type: "object",
-              name: "slide",
-              title: "Slayt",
-              fields: [
-                {
-                  name: "backgroundImage",
-                  title: "Arkaplan Resmi",
-                  type: "image",
-                  options: { hotspot: true },
-                },
-                {
-                  name: "eyebrow",
-                  title: "Üst Başlık (Küçük Yazı)",
-                  type: "string",
-                },
-                {
-                  name: "title",
-                  title: "Ana Başlık",
-                  type: "text",
-                  rows: 3,
-                },
-                {
-                  name: "ctaButton",
-                  title: "Buton",
-                  type: "object",
-                  fields: [
-                    { name: "text", title: "Buton Metni", type: "string" },
-                    { name: "link", title: "Buton Linki", type: "string" },
-                  ],
-                },
-              ],
-            },
-          ],
+          name: "heroVideo",
+          title: "Arkaplan Videosu",
+          type: "file",
+          options: {
+            accept: "video/mp4",
+          },
+          description:
+            "MP4 formatında, sessiz ve optimize edilmiş video (yaklaşık 2MB, 720p).",
         }),
         defineField({
-          name: "secondaryButton",
-          title: "İkinci Buton (Tüm Slaytlar İçin Ortak)",
+          name: "heroPoster",
+          title: "Video Posteri (Kapak Resmi)",
+          type: "image",
+          options: { hotspot: true },
+          description:
+            "Video yüklenene kadar gösterilecek ve LCP için kullanılacak görsel.",
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: "heroTitle",
+          title: "Ana Başlık",
+          type: "string",
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: "heroSubtitle",
+          title: "Alt Başlık",
+          type: "text",
+          rows: 2,
+        }),
+        defineField({
+          name: "heroCTA",
+          title: "Buton",
           type: "object",
           fields: [
-            { name: "text", title: "Buton Metni", type: "string" },
-            {
-              name: "link",
-              title: "Buton Linki",
-              type: "string",
-              description: "Örnek: #",
-            },
+            { name: "label", title: "Buton Metni", type: "string" },
+            { name: "url", title: "Buton Linki", type: "string" },
           ],
         }),
       ],
