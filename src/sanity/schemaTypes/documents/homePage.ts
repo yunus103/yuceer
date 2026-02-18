@@ -98,5 +98,48 @@ export const homePage = defineType({
         }),
       ],
     }),
+    defineField({
+      name: "whyChooseUs",
+      title: "Neden Biz?",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Bölüm Başlığı",
+          type: "string",
+          initialValue: "NEDEN YÜCEER KERESTE'Yİ TERCİH ETMELİSİNİZ?",
+        }),
+        defineField({
+          name: "subtitle",
+          title: "Alt Başlık",
+          type: "string",
+          initialValue: "KALİTE VE GÜVENİN ADRESİ",
+        }),
+        defineField({
+          name: "features",
+          title: "Özellikler",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              fields: [
+                { name: "title", type: "string", title: "Başlık" },
+                {
+                  name: "description",
+                  type: "text",
+                  title: "Açıklama",
+                  rows: 2,
+                },
+                {
+                  name: "icon",
+                  type: "string",
+                  title: "İkon (Lucide icon name)",
+                },
+              ],
+            },
+          ],
+        }),
+      ],
+    }),
   ],
 });

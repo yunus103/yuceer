@@ -1,16 +1,13 @@
+import { PageHero } from '@/components/ui/PageHero'
 import { Button } from '@/components/ui/Button'
 import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 
 export default function ContactPage() {
   return (
-    <div className="bg-muted min-h-screen py-32">
-      <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">İletişim</h1>
-          <p className="text-gray-600 text-lg">
-             Bize her türlü soru ve talebiniz için ulaşabilirsiniz.
-          </p>
-        </div>
+    <div className="bg-white min-h-screen">
+      <PageHero title="İletişim" />
+
+      <div className="container mx-auto px-4 py-16 md:py-24">
 
         <div className="grid lg:grid-cols-3 gap-8">
            {/* Info Cards */}

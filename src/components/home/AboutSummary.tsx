@@ -15,7 +15,7 @@ interface AboutSummaryProps {
     }
   }
   aboutPage?: {
-    heroImage?: string
+    historyImage?: string
     foundingYear?: number
   }
 }
@@ -31,9 +31,9 @@ export default function AboutSummary({ data, aboutPage }: AboutSummaryProps) {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Column: Large Image */}
           <ScrollAnimation className="relative h-[400px] lg:h-[500px] w-full rounded-3xl overflow-hidden shadow-lg">
-             {aboutPage?.heroImage ? (
+             {aboutPage?.historyImage ? (
                <Image 
-                  src={aboutPage.heroImage}
+                  src={aboutPage.historyImage}
                   alt="Hakkımızda"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -55,7 +55,7 @@ export default function AboutSummary({ data, aboutPage }: AboutSummaryProps) {
           {/* Right Column: Content */}
           <div className="pt-8">
             <ScrollAnimation delay={0.2}>
-              <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-6 block">KURUMSAL</span>
+              <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-6 block">HAKKIMIZDA</span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-gray-900 leading-[1.1] tracking-tight uppercase">
                 {data?.title || "GÜVENİLİR KERESTE HİZMETLERİ VE KUSURSUZ İŞÇİLİK."}
               </h2>

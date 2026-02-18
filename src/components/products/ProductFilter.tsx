@@ -1,37 +1,30 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useState } from 'react' // Import useState
+import { useCallback, useState } from 'react'
 import { cn } from '@/lib/utils'
-import { ChevronDown, Filter } from 'lucide-react'
+import { ChevronDown, Filter, X, Tag, TreePine } from 'lucide-react'
 
-// Mock categories and wood types - in real app fetch from Sanity
-const categories = [
-  { slug: 'insaatlik', title: 'İnşaatlık Kereste' },
-  { slug: 'dekoratif', title: 'Dekoratif Ahşap' },
-  { slug: 'palet', title: 'Palet Kerestesi' },
-  { slug: 'osb', title: 'OSB & Kontrplak' },
-  { slug: 'lambiri', title: 'Lambiri & Döşeme' },
-]
+interface FilterItem {
+  slug: string
+  title: string
+}
 
-const woodTypes = [
-  { slug: 'cam', title: 'Çam' },
-  { slug: 'ladin', title: 'Ladin' },
-  { slug: 'mese', title: 'Meşe' },
-  { slug: 'kayin', title: 'Kayın' },
-  { slug: 'iroko', title: 'İroko' },
-]
+interface ProductFilterProps {
+  categories: FilterItem[]
+  woodTypes: FilterItem[]
+}
 
-export default function ProductFilter() {
+export default function ProductFilter({ categories, woodTypes }: ProductFilterProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [isOpen, setIsOpen] = useState(false) // State for mobile filter toggle
+  const [isOpen, setIsOpen] = useState(false)
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString())
       if (value === params.get(name)) {
-        params.delete(name) // Toggle off if already selected
+        params.delete(name)
       } else {
         params.set(name, value)
       }
@@ -46,78 +39,115 @@ export default function ProductFilter() {
 
   const currentCategory = searchParams.get('category')
   const currentWoodType = searchParams.get('woodType')
+  const hasActiveFilters = currentCategory || currentWoodType
 
   const clearFilters = () => {
-     router.push('/urunler', { scroll: false })
+    router.push('/urunler', { scroll: false })
   }
 
   return (
-    <div className="mb-8">
-       {/* Mobile Toggle */}
-       <div className="md:hidden mb-4">
-          <button 
-             onClick={() => setIsOpen(!isOpen)}
-             className="w-full flex items-center justify-between p-4 bg-white border rounded-lg shadow-sm"
-          >
-             <span className="flex items-center gap-2 font-bold"><Filter className="w-4 h-4" /> Filtrele</span>
-             <ChevronDown className={cn("w-5 h-5 transition-transform", isOpen ? "rotate-180" : "")} />
-          </button>
-       </div>
+    <div className="mb-6 lg:mb-0">
+      {/* Mobile Toggle */}
+      <div className="lg:hidden mb-3">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={cn(
+            "w-full flex items-center justify-between px-4 py-3.5 rounded-xl border transition-all",
+            hasActiveFilters
+              ? "bg-primary/5 border-primary/20 shadow-sm"
+              : "bg-white border-gray-200 shadow-sm"
+          )}
+        >
+          <span className="flex items-center gap-2 font-bold text-gray-900 text-sm">
+            <Filter className="w-4 h-4 text-primary" /> Filtrele
+            {hasActiveFilters && (
+              <span className="bg-primary text-white text-[10px] px-1.5 py-0.5 rounded-full leading-none">
+                {(currentCategory ? 1 : 0) + (currentWoodType ? 1 : 0)}
+              </span>
+            )}
+          </span>
+          <ChevronDown className={cn("w-5 h-5 text-gray-400 transition-transform", isOpen ? "rotate-180" : "")} />
+        </button>
+      </div>
 
-      <div className={cn("bg-white p-6 rounded-xl shadow-sm border border-gray-100", isOpen ? "block" : "hidden md:block")}>
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Categories */}
-          <div className="flex-1">
-            <h3 className="font-bold mb-4 text-gray-900 border-b pb-2">Kategoriler</h3>
-            <div className="space-y-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat.slug}
-                  onClick={() => handleFilter('category', cat.slug)}
-                  className={cn(
-                    "block w-full text-left px-3 py-2 rounded-md text-sm transition-colors",
-                    currentCategory === cat.slug
-                      ? "bg-primary/10 text-primary font-bold"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                  )}
-                >
-                  {cat.title}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Wood Types */}
-          <div className="flex-1">
-            <h3 className="font-bold mb-4 text-gray-900 border-b pb-2">Ağaç Türleri</h3>
-            <div className="flex flex-wrap gap-2">
-              {woodTypes.map((wood) => (
-                <button
-                  key={wood.slug}
-                  onClick={() => handleFilter('woodType', wood.slug)}
-                  className={cn(
-                    "px-3 py-1.5 rounded-full text-sm border transition-all",
-                    currentWoodType === wood.slug
-                      ? "bg-primary text-white border-primary shadow-sm"
-                      : "bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary"
-                  )}
-                >
-                  {wood.title}
-                </button>
-              ))}
-            </div>
-          </div>
+      <div className={cn(
+        "bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden",
+        isOpen ? "block" : "hidden lg:block"
+      )}>
+        {/* Filter Header — desktop only */}
+        <div className="hidden lg:block px-5 pt-5 pb-4 border-b border-gray-100">
+          <h3 className="font-bold text-gray-900 flex items-center gap-2 text-sm">
+            <Filter className="w-4 h-4 text-primary" /> Filtreler
+          </h3>
         </div>
 
-        {(currentCategory || currentWoodType) && (
-           <div className="mt-6 pt-4 border-t flex justify-end">
-              <button 
-                 onClick={clearFilters}
-                 className="text-sm text-red-500 hover:text-red-700 font-medium underline"
-              >
-                 Filtreleri Temizle
-              </button>
-           </div>
+        <div className="p-4 sm:p-5 space-y-5">
+          {/* Categories */}
+          {categories.length > 0 && (
+            <div>
+              <h4 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                <Tag className="w-3 h-3" /> Kategoriler
+              </h4>
+              <div className="space-y-0.5">
+                {categories.map((cat) => (
+                  <button
+                    key={cat.slug}
+                    onClick={() => handleFilter('category', cat.slug)}
+                    className={cn(
+                      "block w-full text-left px-3 py-2 rounded-lg text-sm transition-all",
+                      currentCategory === cat.slug
+                        ? "bg-primary text-white font-semibold shadow-sm"
+                        : "text-gray-600 hover:bg-muted hover:text-gray-900"
+                    )}
+                  >
+                    {cat.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Divider */}
+          {categories.length > 0 && woodTypes.length > 0 && (
+            <div className="border-t border-gray-100" />
+          )}
+
+          {/* Wood Types */}
+          {woodTypes.length > 0 && (
+            <div>
+              <h4 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                <TreePine className="w-3 h-3" /> Ağaç Türleri
+              </h4>
+              <div className="flex flex-wrap gap-1.5">
+                {woodTypes.map((wood) => (
+                  <button
+                    key={wood.slug}
+                    onClick={() => handleFilter('woodType', wood.slug)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-full text-xs font-medium border transition-all",
+                      currentWoodType === wood.slug
+                        ? "bg-primary text-white border-primary shadow-sm"
+                        : "bg-muted text-gray-600 border-gray-200 hover:border-primary hover:text-primary"
+                    )}
+                  >
+                    {wood.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Clear Filters */}
+        {hasActiveFilters && (
+          <div className="px-4 sm:px-5 py-3.5 border-t border-gray-100 bg-muted/30">
+            <button
+              onClick={clearFilters}
+              className="w-full text-xs text-gray-500 hover:text-red-600 font-medium flex items-center justify-center gap-1.5 py-1 transition-colors"
+            >
+              <X className="w-3 h-3" /> Filtreleri Temizle
+            </button>
+          </div>
         )}
       </div>
     </div>

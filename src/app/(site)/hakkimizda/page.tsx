@@ -3,9 +3,10 @@ import { Metadata } from 'next'
 import { client } from '@/sanity/lib/client'
 import { ABOUT_PAGE_QUERY } from '@/sanity/lib/queries'
 import { PortableText } from '@portabletext/react'
-import { Button } from '@/components/ui/Button'
-import Link from 'next/link'
-import { Calendar, Users, Award, Truck, Factory, ArrowRight, Info } from 'lucide-react'
+import { PageHero } from '@/components/ui/PageHero'
+import CertificatesSection from '@/components/about/CertificatesSection'
+import * as Icons from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Hakkımızda | Yüceer Kereste',
@@ -15,277 +16,178 @@ export const metadata: Metadata = {
 const portableTextComponents = {
   block: {
     normal: ({ children }: any) => {
-      // If the block is empty (just an Enter key in Sanity), render a spacer
       if (!children || (children.length === 1 && children[0] === '')) {
-        return <p className="mb-6 min-h-[1.5em]">&nbsp;</p>
+        return <p className="mb-4 min-h-[1em]">&nbsp;</p>
       }
-      return <p className="mb-6 text-gray-700 leading-relaxed text-lg">{children}</p>
+      return <p className="mb-4 text-neutral-600 leading-relaxed text-lg">{children}</p>
     },
-    h1: ({ children }: any) => <h1 className="text-4xl font-bold text-gray-900 mb-8">{children}</h1>,
-    h2: ({ children }: any) => <h2 className="text-3xl font-bold text-gray-900 mb-6">{children}</h2>,
-    h3: ({ children }: any) => <h3 className="text-2xl font-bold text-gray-900 mb-4">{children}</h3>,
+    h1: ({ children }: any) => <h1 className="text-3xl font-bold text-neutral-900 mb-6">{children}</h1>,
+    h2: ({ children }: any) => <h2 className="text-2xl font-bold text-neutral-900 mb-4">{children}</h2>,
+    h3: ({ children }: any) => <h3 className="text-xl font-bold text-neutral-900 mb-3">{children}</h3>,
   },
 }
 
 export default async function AboutPage() {
   const data = await client.fetch(ABOUT_PAGE_QUERY);
 
-  if (!data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center p-8 bg-white rounded-2xl shadow-xl max-w-md mx-auto">
-          <Info className="w-16 h-16 text-primary mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">İçerik Hazırlanıyor</h1>
-          <p className="text-gray-600 mb-6">Hakkımızda sayfası içeriği şu an güncellenmektedir. Lütfen daha sonra tekrar deneyiniz.</p>
-          <Link href="/">
-            <Button>Anasayfaya Dön</Button>
-          </Link>
-        </div>
-      </div>
-    )
-  }
+  if (!data) return null;
 
-  const storyImage = data.historyImage || data.heroImage
-  const storyHeading = data.historyHeading || "Hikayemiz"
-  const storyQuote = data.historyQuote || "Doğadan aldığımızı sanata dönüştürüyoruz."
-  const logisticsImage = data.logistics?.image
+  const storyImage = data.historyImage
+  // const storyHeading = data.historyHeading || "Hikayemiz" // Not used in new design
+  // const storyQuote = data.historyQuote // Not used in new design
 
   return (
     <div className="bg-white min-h-screen">
-      {/* 1. Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] md:h-[60vh] md:min-h-[500px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-dark-bg">
-           {data.heroImage && (
-             <Image 
-               src={data.heroImage}
-               alt={data.title || "Hakkımızda"}
-               fill
-               className="object-cover brightness-50"
-               priority
-             />
-           )}
-        </div>
-        <div className="container mx-auto relative z-10 px-4 text-center mt-16 md:mt-0">
-          <span className="inline-block py-1 px-3 rounded-full bg-white/10 backdrop-blur-sm text-white/90 text-sm font-bold tracking-widest uppercase mb-4 md:mb-6 border border-white/20">
-            {data.foundingYear ? `${data.foundingYear}'den Beri` : 'Kurumsal'}
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-4 md:mb-6 tracking-tight">
-            {data.title || "Hakkımızda"}
-          </h1>
-          {data.introduction && (
-            <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed px-2">
-              {data.introduction}
-            </p>
-          )}
-        </div>
-      </section>
+      <PageHero title={data.title || "Hakkımızda"} />
 
-      {/* 2. Stats Strip */}
-      <section className="relative mt-1 z-20 -mt-8 md:-mt-16 container mx-auto px-4 mb-16 md:mb-24">
-        <div className="bg-white rounded-3xl shadow-xl p-6 md:p-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
-           <div className="flex flex-col items-center text-center p-2">
-              <Calendar className="w-8 h-8 text-primary mb-4 opacity-80" />
-              <span className="text-3xl md:text-4xl font-bold text-gray-900 block mb-1">
-                 {data.foundingYear || "1995"}
-              </span>
-              <span className="text-xs md:text-sm font-bold text-gray-500 uppercase tracking-wider">Kuruluş Yılı</span>
-           </div>
-           
-           <div className="flex flex-col items-center text-center p-2 pt-6 sm:pt-2">
-              <Factory className="w-8 h-8 text-primary mb-4 opacity-80" />
-              <span className="text-3xl md:text-4xl font-bold text-gray-900 block mb-1">
-                 {data.stats?.totalArea?.toLocaleString() || "5000"} <span className="text-xl">m²</span>
-              </span>
-              <span className="text-xs md:text-sm font-bold text-gray-500 uppercase tracking-wider">Üretim Alanı</span>
-           </div>
-
-           <div className="flex flex-col items-center text-center p-2 pt-6 sm:pt-2">
-              <Truck className="w-8 h-8 text-primary mb-4 opacity-80" />
-              <span className="text-3xl md:text-4xl font-bold text-gray-900 block mb-1">
-                 {data.stats?.dailyProduction || "100"} <span className="text-xl">m³</span>
-              </span>
-              <span className="text-xs md:text-sm font-bold text-gray-500 uppercase tracking-wider">Günlük Kapasite</span>
-           </div>
-
-           <div className="flex flex-col items-center text-center p-2 pt-6 sm:pt-2">
-              <Users className="w-8 h-8 text-primary mb-4 opacity-80" />
-              <span className="text-3xl md:text-4xl font-bold text-gray-900 block mb-1">
-                 {new Date().getFullYear() - (data.foundingYear || 1995)}
-              </span>
-              <span className="text-xs md:text-sm font-bold text-gray-500 uppercase tracking-wider">Yıllık Tecrübe</span>
-           </div>
-        </div>
-      </section>
-
-      {/* 3. History & Story */}
-      <section className="container mx-auto my-auto px-4 mb-16 md:mb-24">
-        <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
-           <div className="relative">
-              <div>
-                 <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block text-center lg:text-left">HİKAYEMİZ</span>
-                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 leading-tight text-center lg:text-left">
-                    {storyHeading}
-                 </h2>
-                 <div className="relative h-[300px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg">
-                    {storyImage ? (
-                      <Image 
-                        src={storyImage} 
-                        alt={storyHeading} 
-                        fill 
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-200" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-8 left-8 text-white pr-4">
-                        <p className="font-serif italic text-xl md:text-2xl">"{storyQuote}"</p>
-                    </div>
-                 </div>
+      {/* Intro section: Statistics & Image */}
+      <section className="container mx-auto px-4 py-16 md:py-24">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-stretch">
+              {/* Statistics Column */}
+              <div className="flex flex-col justify-center space-y-8">
+                  <div className="space-y-4">
+                       <span className="text-emerald-600 font-bold tracking-widest uppercase text-sm block">BİR BAKIŞTA YÜCEER KERESTE</span>
+                      <h2 className="text-3xl md:text-5xl font-black text-neutral-900 leading-tight">
+                          {data.historyHeading || "Ahşaba Duyulan Saygı ve Ustalıkla Geçen Yıllar"}
+                      </h2>
+                      <div className="w-20 h-2 bg-emerald-600 rounded-full" />
+                  </div>
+                  
+                  {data.stats && data.stats.length > 0 && (
+                      <div className="grid grid-cols-2 gap-4 md:gap-6">
+                          {data.stats.slice(0, 4).map((stat: any, idx: number) => {
+                              const IconComponent = (Icons as any)[stat.icon] || Icons.TrendingUp;
+                              return (
+                                  <div key={idx} className="bg-neutral-50 p-6 md:p-8 rounded-3xl border border-neutral-100 group hover:bg-emerald-600 transition-colors duration-500">
+                                      <div className="inline-flex items-center justify-center p-3 rounded-xl bg-emerald-100 text-emerald-600 mb-4 group-hover:bg-white/20 group-hover:text-white transition-colors">
+                                          <IconComponent className="w-6 h-6" />
+                                      </div>
+                                      <div className="text-3xl md:text-4xl font-black text-neutral-900 mb-1 tracking-tight group-hover:text-white transition-colors">
+                                          {stat.value}
+                                      </div>
+                                      <div className="text-xs md:text-sm text-neutral-500 font-bold uppercase tracking-wider group-hover:text-white/80 transition-colors">
+                                          {stat.name}
+                                      </div>
+                                  </div>
+                              )
+                          })}
+                      </div>
+                  )}
               </div>
-           </div>
 
-           <div>
-              <div className="border-l-4 border-primary/30 pl-6 md:pl-8">
-                {data.history ? (
-                   <div>
-                     <PortableText value={data.history} components={portableTextComponents} />
-                   </div>
-                ) : (
-                  <div className="space-y-6">
-                     <p className="text-gray-700 leading-relaxed text-lg first-letter:text-5xl first-letter:font-bold first-letter:text-primary first-letter:mr-1 first-letter:float-left first-letter:leading-none">
-                       1995 yılında Ankara Ostim'de küçük bir atölye olarak başladığımız yolculuğumuzda, bugün Türkiye'nin dört bir yanına hizmet veren köklü bir kereste tedarikçisi olmanın gururunu yaşıyoruz.
-                     </p>
-                     <p className="text-gray-600 leading-relaxed text-lg">
-                       Kurulduğumuz ilk günden itibaren değişmeyen tek prensibimiz &quot;Dürüst Ticaret ve Kaliteli Ürün&quot; olmuştur. Kereste sektöründeki teknolojik gelişmeleri yakından takip ederek makine parkurumuzu sürekli yeniledik ve üretim kapasitemizi artırdık.
-                     </p>
-                     <blockquote className="border-l-4 border-accent/40 pl-4 py-2 my-6 italic text-gray-500 text-base">
-                       Kalite bizim için bir standart değil, bir yaşam biçimidir.
-                     </blockquote>
-                     <p className="text-gray-600 leading-relaxed text-lg">
-                       İnşaatlık keresteden mobilyalık ağaçlara, lambri ve döşeme tahtalarından özel ölçü siparişlere kadar geniş bir ürün yelpazesi ile müşterilerimizin ihtiyaçlarına profesyonel çözümler sunuyoruz.
-                     </p>
-                  </div>
-                )}
-              </div>
-           </div>
-        </div>
-      </section>
-
-
-      {/* 4. Mission & Vision Cards */}
-      <section className="bg-gray-50 py-16 md:py-24 mb-16 md:mb-24">
-         <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-8">
-               <div className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 text-primary">
-                     <Award className="w-6 h-6 md:w-7 md:h-7" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Misyonumuz</h3>
-                  <p className="text-gray-600 leading-relaxed text-base md:text-lg">
-                     {data.mission || "Müşterilerimize en kaliteli ahşap ürünlerini, en uygun fiyat ve zamanında teslimat garantisi ile sunmak. Sürdürülebilir ormancılık ilkelerine bağlı kalarak, doğal kaynakları verimli kullanmak."}
-                  </p>
-               </div>
-
-               <div className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-accent/10 rounded-2xl flex items-center justify-center mb-6 text-accent">
-                     <ArrowRight className="w-6 h-6 md:w-7 md:h-7" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Vizyonumuz</h3>
-                  <p className="text-gray-600 leading-relaxed text-base md:text-lg">
-                     {data.vision || "Türkiye'nin lider orman ürünleri tedarikçisi olmak ve markamızı uluslararası pazarda temsil etmek. Yenilikçi üretim teknikleri ile sektördeki standartları belirleyen öncü firma olmak."}
-                  </p>
-               </div>
-            </div>
-         </div>
-      </section>
-
-      {/* 5. Certificates Section */}
-      <section className="container mx-auto px-4 mb-16 md:mb-24 text-center">
-         <div className="max-w-3xl mx-auto mb-12 md:mb-16">
-            <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">KALİTE BELGELERİMİZ</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-               Uluslararası Standartlarda Üretim
-            </h2>
-            <p className="text-gray-600 text-lg">
-               Üretim süreçlerimiz ve ürün kalitemiz, uluslararası geçerliliğe sahip sertifikalarla tescillenmiştir.
-            </p>
-         </div>
-
-         {data.certificates && data.certificates.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 items-center justify-center grayscale hover:grayscale-0 transition-all duration-500">
-               {data.certificates.map((cert: any, idx: number) => (
-                  <div key={idx} className="flex flex-col items-center gap-4 group">
-                     <div className="relative w-28 h-28 md:w-40 md:h-40 flex items-center justify-center p-4 bg-white rounded-full shadow-lg border border-gray-100 group-hover:-translate-y-2 transition-transform duration-300">
-                        {cert.url && (
+              {/* Image Column */}
+              <div className="relative">
+                  <div className="relative h-[400px] lg:h-full min-h-[500px] w-full rounded-[3rem] overflow-hidden shadow-2xl">
+                      {storyImage ? (
                            <Image 
-                              src={cert.url}
-                              alt={cert.title || "Sertifika"}
-                              fill
-                              className="object-contain p-6"
+                             src={storyImage} 
+                             alt="Yüceer Kereste Tarihçe" 
+                             fill 
+                             className="object-cover hover:scale-105 transition-transform duration-700"
                            />
-                        )}
-                     </div>
-                     <span className="text-sm font-bold text-gray-500 group-hover:text-primary transition-colors">
-                        {cert.title}
-                     </span>
+                      ) : (
+                          <div className="bg-neutral-200 w-full h-full" />
+                      )}
                   </div>
-               ))}
-            </div>
-         ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-center opacity-40">
-               <div className="flex flex-col items-center"><div className="w-28 h-28 md:w-32 md:h-32 bg-gray-200 rounded-full mb-4"></div><span>FSC Belgesi</span></div>
-               <div className="flex flex-col items-center"><div className="w-28 h-28 md:w-32 md:h-32 bg-gray-200 rounded-full mb-4"></div><span>ISO 9001</span></div>
-               <div className="flex flex-col items-center"><div className="w-28 h-28 md:w-32 md:h-32 bg-gray-200 rounded-full mb-4"></div><span>CE Belgesi</span></div>
-               <div className="flex flex-col items-center"><div className="w-28 h-28 md:w-32 md:h-32 bg-gray-200 rounded-full mb-4"></div><span>OHSAS 18001</span></div>
-            </div>
-         )}
+                  {/* Floating badge for year */}
+                  <div className="absolute -bottom-6 -left-6 md:bottom-12 md:-left-12 bg-white p-8 md:p-10 rounded-3xl shadow-2xl z-20 border border-neutral-100 hidden md:block">
+                       <div className="text-center">
+                           <span className="block text-6xl md:text-7xl font-black text-emerald-600 leading-none tracking-tighter">
+                               {new Date().getFullYear() - (data.foundingYear || 1995)}
+                           </span>
+                           <span className="block text-sm font-bold text-neutral-500 uppercase tracking-widest mt-2">Yıllık Tecrübe</span>
+                       </div>
+                  </div>
+              </div>
+          </div>
       </section>
 
-      {/* 6. Logistics Banner */}
-      <section className="bg-dark-bg text-white py-16 md:py-20 relative overflow-hidden">
-         <div className="absolute inset-0 z-0 opacity-20">
-            {logisticsImage ? (
-              <Image 
-                src={logisticsImage}
-                alt="Lojistik"
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="w-full h-full bg-dark-bg" />
-            )}
-         </div>
-         <div className="container mx-auto px-4 relative z-10">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-               <div className="max-w-2xl text-center md:text-left">
-                  <div className="flex items-center justify-center md:justify-start gap-4 mb-6 text-accent">
-                     <Truck className="w-8 h-8 md:w-10 md:h-10" />
-                     <span className="font-bold tracking-widest uppercase">LOJİSTİK AĞIMIZ</span>
+      {/* Main Content Section (Full-Width / Centered) */}
+      <section className="bg-neutral-50 py-20 md:py-32">
+          <div className="container mx-auto px-4">
+              <div className="max-w-4xl mx-auto">
+                  <div className="prose prose-lg md:prose-xl prose-neutral max-w-none text-neutral-600 leading-relaxed">
+                      {data.history ? (
+                          <PortableText value={data.history} components={portableTextComponents} />
+                      ) : (
+                          <p>İçerik hazırlanıyor...</p>
+                      )}
                   </div>
-                  <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-                     {data.logistics?.title || "Türkiye'nin Her Yerine Güvenli Teslimat"}
-                  </h2>
-                  <p className="text-gray-400 text-lg leading-relaxed mb-8">
-                     {data.logistics?.description || "Geniş nakliye ağımız ve güçlü lojistik altyapımız ile siparişlerinizi Türkiye'nin 81 iline, şantiyenize veya deponuza kadar eksiksiz ve tam zamanında ulaştırıyoruz."}
-                  </p>
-                  <Button size="lg" className="bg-accent hover:bg-accent-hover text-white border-none rounded-full px-8 w-full md:w-auto">
-                     Teslimat Detayları
-                  </Button>
-               </div>
-               
-               <div className="hidden md:block">
-                  <div className="w-64 h-64 border-4 border-white/10 rounded-full flex items-center justify-center relative">
-                     <div className="absolute inset-0 border-t-4 border-accent rounded-full animate-spin-slow" />
-                     <div className="text-center">
-                        <span className="block text-5xl font-bold text-white mb-2">81</span>
-                        <span className="text-sm text-gray-400 uppercase tracking-widest">İle Sevkiyat</span>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+              </div>
+          </div>
       </section>
+
+      {/* Mission & Vision (Modern) */}
+      <section className="py-24 bg-emerald-50/50">
+          <div className="container mx-auto px-4">
+              <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+                  <div className="bg-white p-10 md:p-12 rounded-[2.5rem] shadow-xl hover:shadow-2xl transition-shadow border border-emerald-100/50 group">
+                      <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors duration-300">
+                          <Icons.Target className="w-8 h-8 text-emerald-600 group-hover:text-white transition-colors" />
+                      </div>
+                      <h3 className="text-3xl font-black text-neutral-900 mb-6">Misyonumuz</h3>
+                      <p className="text-lg text-neutral-600 leading-relaxed">
+                          {data.mission || "Müşterilerimize en kaliteli ahşap ürünlerini sunmak."}
+                      </p>
+                  </div>
+
+                  <div className="bg-white p-10 md:p-12 rounded-[2.5rem] shadow-xl hover:shadow-2xl transition-shadow border border-emerald-100/50 group">
+                      <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 transition-colors duration-300">
+                          <Icons.Eye className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" />
+                      </div>
+                      <h3 className="text-3xl font-black text-neutral-900 mb-6">Vizyonumuz</h3>
+                      <p className="text-lg text-neutral-600 leading-relaxed">
+                          {data.vision || "Sektörde öncü ve global bir marka olmak."}
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      {/* Certificates */}
+      <div className="py-24">
+         <CertificatesSection certificates={data.certificates} />
+      </div>
+
+       {/* Logistics Network (Modern) */}
+       {data.logistics && (
+           <section className="relative py-24 overflow-hidden bg-neutral-900">
+                {/* Background Image with Overlay */}
+               <div className="absolute inset-0 z-0">
+                   {data.logistics.image && (
+                       <Image 
+                           src={data.logistics.image}
+                           alt="Lojistik"
+                           fill
+                           className="object-cover opacity-20"
+                       />
+                   )}
+                   <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/90 to-transparent" />
+               </div>
+
+               <div className="container mx-auto px-4 relative z-10">
+                   <div className="max-w-2xl">
+                       <span className="text-emerald-500 font-bold tracking-widest uppercase mb-4 block">LOJİSTİK AĞIMIZ</span>
+                       <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8 leading-tight">
+                           {data.logistics.title}
+                       </h2>
+                       <p className="text-xl text-neutral-300 leading-relaxed mb-10">
+                           {data.logistics.description}
+                       </p>
+                       <div className="flex items-center gap-4 text-white font-medium">
+                           <div className="flex -space-x-4">
+                               {[1,2,3,4].map(i => (
+                                   <div key={i} className="w-12 h-12 rounded-full bg-neutral-800 border-2 border-neutral-900 flex items-center justify-center text-xs">
+                                       <Icons.Truck className="w-6 h-6 text-neutral-500" />
+                                   </div>
+                               ))}
+                           </div>
+                           <span>Güvenli ve Hızlı Teslimat</span>
+                       </div>
+                   </div>
+               </div>
+           </section>
+       )}
     </div>
   )
 }

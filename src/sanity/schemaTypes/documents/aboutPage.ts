@@ -14,20 +14,7 @@ export const aboutPage = defineType({
       initialValue: "Hakkımızda",
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: "heroImage",
-      title: "Hero (Kapak) Resmi",
-      type: "image",
-      options: { hotspot: true },
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "introduction",
-      title: "Giriş Metni",
-      type: "text",
-      rows: 4,
-      description: "Sayfanın üst kısmında yer alacak kısa tanıtım yazısı.",
-    }),
+
     defineField({
       name: "foundingYear",
       title: "Kuruluş Yılı",
@@ -78,23 +65,16 @@ export const aboutPage = defineType({
     defineField({
       name: "stats",
       title: "İstatistikler & Kapasite",
-      type: "object",
-      fields: [
-        defineField({
-          name: "totalArea",
-          title: "Toplam Alan (m²)",
-          type: "number",
-        }),
-        defineField({
-          name: "dailyProduction",
-          title: "Günlük Üretim Kapasitesi (m³)",
-          type: "number",
-        }),
-        defineField({
-          name: "employees",
-          title: "Çalışan Sayısı",
-          type: "number",
-        }),
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "name", type: "string", title: "İstatistik Adı" },
+            { name: "value", type: "string", title: "Değer" },
+            { name: "icon", type: "string", title: "İkon (Lucide icon name)" },
+          ],
+        },
       ],
     }),
     defineField({
@@ -110,7 +90,12 @@ export const aboutPage = defineType({
               name: "title",
               type: "string",
               title: "Sertifika Adı",
-              description: "Örn: FSC, ISO 9001",
+            },
+            {
+              name: "modalImage",
+              type: "image",
+              title: "Modal İçin Büyük Görsel",
+              description: "Tıklandığında açılacak büyük sertifika görseli",
             },
           ],
         },
@@ -125,7 +110,7 @@ export const aboutPage = defineType({
           name: "title",
           title: "Başlık",
           type: "string",
-          initialValue: "Tüm Türkiye'ye Teslimat",
+          initialValue: "Lojistik Ağımız",
         }),
         defineField({
           name: "description",

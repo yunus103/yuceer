@@ -86,8 +86,6 @@ export default async function Footer() {
                   { label: 'Anasayfa', href: '/' },
                   { label: 'Kurumsal', href: '/hakkimizda' },
                   { label: 'Ürünler', href: '/urunler' },
-                  { label: 'Hizmetler', href: '/hizmetler' },
-                  { label: 'Referanslar', href: '/referanslar' },
                   { label: 'İletişim', href: '/iletisim' },
               ].map((item) => (
                   <li key={item.href}>
