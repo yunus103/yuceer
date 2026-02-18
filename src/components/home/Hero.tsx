@@ -24,8 +24,8 @@ export default function Hero({ data }: HeroProps) {
   const posterUrl = data?.heroPoster || "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?q=80&w=2070&auto=format&fit=crop";
   const title = data?.heroTitle || "GELECEĞİN YAŞAM ALANLARINI İNŞA EDİYORUZ";
   const subtitle = data?.heroSubtitle || "Doğal ahşabın sıcaklığını ve kalitesini modern yaşam alanlarınıza taşıyoruz.";
-  const ctaLabel = data?.heroCTA?.label || "Hizmetlerimizi İnceleyin";
-  const ctaUrl = data?.heroCTA?.url || "/hizmetler";
+  const ctaLabel = data?.heroCTA?.label || "Ürünlerimizi İnceleyin";
+  const ctaUrl = data?.heroCTA?.url || "/urunler";
 
   return (
     <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-black flex items-center">
