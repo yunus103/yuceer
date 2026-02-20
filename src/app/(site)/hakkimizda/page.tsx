@@ -4,7 +4,6 @@ import { client } from '@/sanity/lib/client'
 import { ABOUT_PAGE_QUERY } from '@/sanity/lib/queries'
 import { PortableText } from '@portabletext/react'
 import { PageHero } from '@/components/ui/PageHero'
-import CertificatesSection from '@/components/about/CertificatesSection'
 import * as Icons from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -19,7 +18,7 @@ const portableTextComponents = {
       if (!children || (children.length === 1 && children[0] === '')) {
         return <p className="mb-4 min-h-[1em]">&nbsp;</p>
       }
-      return <p className="mb-4 text-neutral-600 leading-relaxed text-lg">{children}</p>
+      return <p className="mb-4 text-neutral-900 leading-relaxed text-lg">{children}</p>
     },
     h1: ({ children }: any) => <h1 className="text-3xl font-bold text-neutral-900 mb-6">{children}</h1>,
     h2: ({ children }: any) => <h2 className="text-2xl font-bold text-neutral-900 mb-4">{children}</h2>,
@@ -103,15 +102,29 @@ export default async function AboutPage() {
       </section>
 
       {/* Main Content Section (Full-Width / Centered) */}
-      <section className="bg-neutral-50 py-20 md:py-32">
-          <div className="container mx-auto px-4">
+      <section className="relative py-20 md:py-32 overflow-hidden bg-neutral-50">
+          {data.contentBackgroundImage && (
+              <div className="absolute inset-0 z-0">
+                  <Image 
+                      src={data.contentBackgroundImage}
+                      alt="Arka Plan"
+                      fill
+                      className="object-cover opacity-[0.7]"
+                      priority={false}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-neutral-50 via-transparent to-neutral-50" />
+              </div>
+          )}
+          <div className="container mx-auto px-4 relative z-10">
               <div className="max-w-4xl mx-auto">
-                  <div className="prose prose-lg md:prose-xl prose-neutral max-w-none text-neutral-600 leading-relaxed">
-                      {data.history ? (
-                          <PortableText value={data.history} components={portableTextComponents} />
-                      ) : (
-                          <p>İçerik hazırlanıyor...</p>
-                      )}
+                  <div className="bg-white/50 backdrop-blur-md p-8 md:p-16 rounded-[3rem] shadow-2xl border border-white/40">
+                      <div className="prose prose-lg md:prose-xl prose-neutral max-w-none text-neutral-900 leading-relaxed">
+                          {data.history ? (
+                              <PortableText value={data.history} components={portableTextComponents} />
+                          ) : (
+                              <p>İçerik hazırlanıyor...</p>
+                          )}
+                      </div>
                   </div>
               </div>
           </div>
@@ -143,13 +156,6 @@ export default async function AboutPage() {
               </div>
           </div>
       </section>
-
-      {/* Certificates */}
-      <div className="py-24">
-         <CertificatesSection certificates={data.certificates} />
-      </div>
-
-       {/* Logistics Network (Modern) */}
        {data.logistics && (
            <section className="relative py-24 overflow-hidden bg-neutral-900">
                 {/* Background Image with Overlay */}

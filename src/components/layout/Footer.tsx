@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail, ArrowUp } from 'lucide-react'
 import { client } from "@/sanity/lib/client";
 import { SETTINGS_QUERY } from "@/sanity/lib/queries";
+import { navLinks } from '@/lib/navigation'
 
 export default async function Footer() {
   const settings = await client.fetch(SETTINGS_QUERY);
@@ -82,12 +83,7 @@ export default async function Footer() {
           <div className="lg:col-span-2">
             <h4 className="text-sm font-bold tracking-[0.2em] text-primary uppercase mb-8">Keşfet</h4>
             <ul className="space-y-4">
-              {[
-                  { label: 'Anasayfa', href: '/' },
-                  { label: 'Kurumsal', href: '/hakkimizda' },
-                  { label: 'Ürünler', href: '/urunler' },
-                  { label: 'İletişim', href: '/iletisim' },
-              ].map((item) => (
+              {navLinks.map((item) => (
                   <li key={item.href}>
                       <Link href={item.href} className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
                           <span className="w-1.5 h-1.5 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"/>
@@ -108,7 +104,7 @@ export default async function Footer() {
                         <MapPin className="w-4 h-4" />
                     </div>
                     <div>
-                        <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Mərkez Ofis</span>
+                        <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Merkez Ofis</span>
                         <p className="text-gray-300 leading-relaxed text-xs">{address}</p>
                     </div>
                  </div>

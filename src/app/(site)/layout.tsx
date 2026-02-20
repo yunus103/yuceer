@@ -2,6 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { client } from "@/sanity/lib/client";
 import { SETTINGS_QUERY } from "@/sanity/lib/queries";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
 export default async function SiteLayout({
   children,
@@ -16,6 +17,7 @@ export default async function SiteLayout({
       <main className="min-h-screen">
         {children}
       </main>
+      <WhatsAppButton phone={settings?.contact?.phone} />
       <Footer />
     </>
   );

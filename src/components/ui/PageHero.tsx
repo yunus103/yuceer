@@ -2,10 +2,11 @@ import { cn } from "@/lib/utils";
 
 interface PageHeroProps {
   title: string;
+  subtitle?: string;
   className?: string;
 }
 
-export function PageHero({ title, className }: PageHeroProps) {
+export function PageHero({ title, subtitle, className }: PageHeroProps) {
   return (
     <section
       className={cn(
@@ -21,6 +22,12 @@ export function PageHero({ title, className }: PageHeroProps) {
             style={{ animationFillMode: 'forwards' }}>
           {title}
         </h1>
+        {subtitle && (
+          <p className="text-emerald-100/80 text-lg md:text-xl max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in-up"
+             style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
+            {subtitle}
+          </p>
+        )}
         <div className="h-1.5 w-32 bg-emerald-400/30 mx-auto rounded-full opacity-0 animate-scale-x"
              style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}></div>
       </div>

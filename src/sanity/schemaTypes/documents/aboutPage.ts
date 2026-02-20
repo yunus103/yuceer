@@ -78,30 +78,6 @@ export const aboutPage = defineType({
       ],
     }),
     defineField({
-      name: "certificates",
-      title: "Sertifikalar",
-      type: "array",
-      of: [
-        {
-          type: "image",
-          options: { hotspot: true },
-          fields: [
-            {
-              name: "title",
-              type: "string",
-              title: "Sertifika Adı",
-            },
-            {
-              name: "modalImage",
-              type: "image",
-              title: "Modal İçin Büyük Görsel",
-              description: "Tıklandığında açılacak büyük sertifika görseli",
-            },
-          ],
-        },
-      ],
-    }),
-    defineField({
       name: "logistics",
       title: "Lojistik & Teslimat",
       type: "object",
@@ -125,6 +101,14 @@ export const aboutPage = defineType({
           options: { hotspot: true },
         }),
       ],
+    }),
+    defineField({
+      name: "contentBackgroundImage",
+      title: "Ana İçerik Arka Plan Görseli",
+      type: "image",
+      options: { hotspot: true },
+      description:
+        "Hakkımızda yazısının arkasında hafif saydam görünecek resim.",
     }),
     defineField({
       name: "seo",

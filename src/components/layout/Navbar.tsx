@@ -2,18 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Menu, X, Phone, Mail } from 'lucide-react'
+import { Menu, X, Phone, Mail, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
-
-const navLinks = [
-  { href: '/', label: 'Anasayfa' },
-  { href: '/hakkimizda', label: 'Kurumsal' },
-  { href: '/urunler', label: 'Ürünler' },
-  { href: '/iletisim', label: 'İletişim' },
-]
+import { navLinks } from '@/lib/navigation'
 
 const MotionDiv = motion.create('div')
 
@@ -48,8 +42,8 @@ export default function Navbar({ logo }: NavbarProps) {
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-1 z-50 group">
-             {logo ? (
-                <div className="relative h-16 w-44">
+              {logo ? (
+                <div className="relative h-20 w-52">
                    <Image 
                       src={logo} 
                       alt="Yüceer Logo" 
@@ -71,15 +65,15 @@ export default function Navbar({ logo }: NavbarProps) {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8 lg:gap-10">
-            {navLinks.map((link) => {
+          <nav className="hidden md:flex items-center gap-10 lg:gap-12">
+            {navLinks.filter(l => l.href !== '/iletisim').map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
               return (
                 <div key={link.href} className="flex items-center gap-2">
                    <Link
                      href={link.href}
                      className={cn(
-                       "text-[11px] font-bold tracking-widest uppercase transition-colors relative group flex items-center gap-1",
+                       "text-[13px] font-bold tracking-widest uppercase transition-colors relative group flex items-center gap-1",
                        isActive ? "text-white" : "text-white/60 hover:text-white"
                      )}
                    >
@@ -98,12 +92,14 @@ export default function Navbar({ logo }: NavbarProps) {
             })}
           </nav>
 
-          {/* Right Actions */}
-          <div className="hidden md:flex items-center gap-6 text-xs font-bold uppercase tracking-wider text-white">
-             <button className="flex items-center gap-2 hover:text-primary transition-colors">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                Ara
-             </button>
+          {/* Right Actions / CTA */}
+          <div className="hidden md:flex items-center">
+             <Link 
+               href="/iletisim"
+               className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-full text-[13px] font-bold uppercase tracking-widest transition-all duration-300 shadow-lg shadow-emerald-900/20 hover:shadow-emerald-900/40 hover:-translate-y-0.5 active:translate-y-0"
+             >
+                İletişim
+             </Link>
           </div>
 
           {/* Mobile Toggle */}
@@ -141,7 +137,7 @@ export default function Navbar({ logo }: NavbarProps) {
               <div className="flex justify-end mb-8">
               </div>
               <nav className="flex flex-col gap-6 mt-10">
-                {navLinks.map((link) => {
+                {navLinks.filter(l => l.href !== '/iletisim').map((link) => {
                   const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
                   return (
                     <Link
@@ -150,13 +146,21 @@ export default function Navbar({ logo }: NavbarProps) {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
                         "text-lg font-medium transition-colors border-b border-white/10 pb-2",
-                        isActive ? "text-primary border-primary/50" : "text-white hover:text-primary"
+                        isActive ? "text-emerald-500 border-emerald-500/50" : "text-white hover:text-emerald-500"
                       )}
                     >
                       {link.label}
                     </Link>
                   )
                 })}
+                <Link
+                  href="/iletisim"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-lg font-bold text-emerald-500 border-b border-emerald-500/50 pb-2 flex items-center justify-between group"
+                >
+                  İletişim
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </nav>
               
               <div className="mt-auto pt-10 border-t border-white/10">

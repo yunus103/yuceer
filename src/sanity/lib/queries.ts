@@ -5,7 +5,13 @@ export const SETTINGS_QUERY = defineQuery(`
     siteTitle,
     "logo": logo.asset->url,
     socials,
-    contact
+    contact {
+      address,
+      phone,
+      email,
+      workingHours,
+      mapEmbed
+    }
   }
 `);
 
@@ -69,15 +75,28 @@ export const ABOUT_PAGE_QUERY = defineQuery(`
       value,
       icon
     },
-    certificates[] {
-      "url": asset->url,
-      title,
-      "modalImage": modalImage.asset->url
-    },
     logistics {
       title,
       description,
       "image": image.asset->url
+    },
+    "contentBackgroundImage": contentBackgroundImage.asset->url,
+    seo {
+      metaTitle,
+      metaDescription
+    }
+  }
+`);
+
+export const CERTIFICATES_PAGE_QUERY = defineQuery(`
+  *[_type == "certificatesPage"][0] {
+    title,
+    subtitle,
+    certificates[] {
+      title,
+      description,
+      "icon": icon.asset->url,
+      "images": images[].asset->url
     },
     seo {
       metaTitle,
