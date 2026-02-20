@@ -19,8 +19,10 @@ export const ALL_PRODUCTS_QUERY = defineQuery(`
   *[_type == "product"] {
     _id,
     title,
+    shortDescription,
     "slug": slug.current,
-    "mainImage": mainImage.asset->url
+    "mainImage": mainImage.asset->url,
+    "mainImageAlt": mainImage.alt
   }
 `);
 
@@ -55,8 +57,10 @@ export const HOME_PAGE_QUERY = defineQuery(`
     "products": *[_type == "product"] | order(_createdAt desc)[0...4] {
       _id,
       title,
+      shortDescription,
       "slug": slug.current,
-      "mainImage": mainImage.asset->url
+      "mainImage": mainImage.asset->url,
+      "mainImageAlt": mainImage.alt
     }
   }
 `);
@@ -109,12 +113,23 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`
   *[_type == "product" && slug.current == $slug][0] {
     _id,
     title,
+    shortDescription,
     description,
     "mainImage": mainImage.asset->url,
-    "gallery": gallery[].asset->url,
+    "mainImageAlt": mainImage.alt,
+    "gallery": gallery[] {
+      "url": asset->url,
+      "alt": alt
+    },
     "specs": technicalSpecs.rows[] {
       label,
       value
+    },
+    seo {
+      metaTitle,
+      metaDescription,
+      keywords,
+      "ogImage": ogImage.asset->url
     }
   }
 `);

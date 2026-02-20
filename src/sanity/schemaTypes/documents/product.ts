@@ -21,6 +21,14 @@ export const product = defineType({
         maxLength: 96,
       },
     }),
+    defineField({
+      name: "shortDescription",
+      title: "Kısa Açıklama",
+      type: "text",
+      rows: 2,
+      description:
+        "Ürün listelerinde ve meta açıklamalarda kullanılacak özet bilgi.",
+    }),
 
     defineField({
       name: "mainImage",
@@ -29,12 +37,32 @@ export const product = defineType({
       options: {
         hotspot: true,
       },
+      fields: [
+        {
+          name: "alt",
+          type: "string",
+          title: "Alternatif Metin",
+          description: "SEO ve erişilebilirlik için görseli açıklayan metin.",
+        },
+      ],
     }),
     defineField({
       name: "gallery",
       title: "Galeri",
       type: "array",
-      of: [{ type: "image", options: { hotspot: true } }],
+      of: [
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            {
+              name: "alt",
+              type: "string",
+              title: "Alternatif Metin",
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: "description",

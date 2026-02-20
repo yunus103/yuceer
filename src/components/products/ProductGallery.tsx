@@ -4,14 +4,19 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { Package } from 'lucide-react'
 
+interface ProductImage {
+  url: string
+  alt?: string
+}
+
 interface ProductGalleryProps {
-  images: string[]
+  images: ProductImage[]
   title: string
 }
 
 export default function ProductGallery({ images, title }: ProductGalleryProps) {
-  const validImages = images.filter(Boolean)
-  const [selectedImage, setSelectedImage] = useState(validImages[0] || '')
+  const validImages = images.filter(img => img.url)
+  const [selectedImage, setSelectedImage] = useState<ProductImage>(validImages[0] || { url: '', alt: '' })
   const [imageError, setImageError] = useState(false)
 
   if (validImages.length === 0) {
@@ -33,8 +38,8 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
           </div>
         ) : (
           <Image
-            src={selectedImage}
-            alt={title}
+            src={selectedImage.url}
+            alt={selectedImage.alt || title}
             fill
             className="object-contain p-4"
             onError={() => setImageError(true)}
@@ -52,14 +57,14 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
               }}
               className={cn(
                 "relative h-20 w-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all",
-                selectedImage === img
+                selectedImage.url === img.url
                   ? "border-primary shadow-md"
                   : "border-gray-200 opacity-60 hover:opacity-100 hover:border-gray-300"
               )}
             >
               <Image
-                src={img}
-                alt={`${title} - Görsel ${index + 1}`}
+                src={img.url}
+                alt={img.alt || `${title} - Görsel ${index + 1}`}
                 fill
                 className="object-cover"
               />

@@ -54,9 +54,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const product = await client.fetch(PRODUCT_BY_SLUG_QUERY, { slug })
     if (!product) return { title: 'Ürün Bulunamadı | Yüceer Kereste' }
 
+    // SEO Fallback Logic
+    const title = product.seo?.metaTitle || product.title
+    const description = product.seo?.metaDescription || product.shortDescription || getPlainText(product.description)
+    const keywords = product.seo?.keywords
+
     return {
-      title: `${product.title} | Yüceer Kereste`,
-      description: getPlainText(product.description) || `${product.title} hakkında detaylı bilgi.`,
+      title: `${title} | Yüceer Kereste`,
+      description: description?.substring(0, 160),
+      keywords: keywords,
+      openGraph: {
+        title: title,
+        description: description?.substring(0, 160),
+        images: product.seo?.ogImage ? [{ url: product.seo.ogImage }] : product.mainImage ? [{ url: product.mainImage }] : [],
+      }
     }
   } catch {
     return { title: 'Ürün | Yüceer Kereste' }
@@ -88,7 +99,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     notFound()
   }
 
-  const allImages = [product.mainImage, ...(product.gallery || [])].filter(Boolean)
+  const allImages = [
+    { url: product.mainImage, alt: product.mainImageAlt },
+    ...(product.gallery || [])
+  ].filter(img => img.url)
 
   return (
     <div className="min-h-screen bg-white">
