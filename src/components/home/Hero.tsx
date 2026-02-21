@@ -1,10 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/Button'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Play, X } from 'lucide-react'
 
 interface HeroProps {
   data?: {
@@ -12,6 +13,7 @@ interface HeroProps {
     heroPoster?: string
     heroTitle?: string
     heroSubtitle?: string
+    youtubeLink?: string
     heroCTA?: {
       label?: string
       url?: string
@@ -24,8 +26,21 @@ export default function Hero({ data }: HeroProps) {
   const posterUrl = data?.heroPoster || "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?q=80&w=2070&auto=format&fit=crop";
   const title = data?.heroTitle || "GELECEĞİN YAŞAM ALANLARINI İNŞA EDİYORUZ";
   const subtitle = data?.heroSubtitle || "Doğal ahşabın sıcaklığını ve kalitesini modern yaşam alanlarınıza taşıyoruz.";
+  const youtubeLink = data?.youtubeLink;
   const ctaLabel = data?.heroCTA?.label || "Ürünlerimizi İnceleyin";
   const ctaUrl = data?.heroCTA?.url || "/urunler";
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Helper to extract YouTube ID
+  let youtubeEmbedUrl = "";
+  if (youtubeLink) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = youtubeLink.match(regExp);
+    if (match && match[2].length === 11) {
+      youtubeEmbedUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+    }
+  }
 
   return (
     <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-black flex items-center">
@@ -98,16 +113,58 @@ export default function Hero({ data }: HeroProps) {
                initial={{ opacity: 0, y: 20 }}
                animate={{ opacity: 1, y: 0 }}
                transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+               className="flex flex-col sm:flex-row items-center gap-4"
              >
-                <Link href={ctaUrl} className="inline-block">
-                  <Button size="lg" className="rounded-full bg-accent hover:bg-emerald-600 text-white px-8 py-6 text-base font-bold tracking-widest uppercase transition-all hover:scale-105 active:scale-95 group">
+                <Link href={ctaUrl} className="inline-block w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto rounded-full bg-accent hover:bg-emerald-600 text-white px-8 py-6 text-base font-bold tracking-widest uppercase transition-all hover:scale-105 active:scale-95 group shadow-lg">
                     {ctaLabel} <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
+
+                {youtubeEmbedUrl && (
+                  <Button 
+                    variant="outline"
+                    size="lg" 
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full sm:w-auto rounded-full border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-base font-bold tracking-widest uppercase transition-all hover:scale-105 active:scale-95 group bg-transparent backdrop-blur-sm shadow-lg"
+                  >
+                    <Play className="mr-2 w-5 h-5 fill-white" /> Tanıtım Videosu
+                  </Button>
+                )}
              </motion.div>
           </motion.div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+            onClick={() => setIsModalOpen(false)}
+          >
+            <div 
+              className="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-colors"
+                onClick={() => setIsModalOpen(false)}
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <iframe
+                src={youtubeEmbedUrl}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full border-0"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

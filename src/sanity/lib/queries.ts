@@ -40,7 +40,8 @@ export const HOME_PAGE_QUERY = defineQuery(`
         heroCTA {
           label,
           url
-        }
+        },
+        youtubeLink
       },
       aboutSection,
       whyChooseUs {

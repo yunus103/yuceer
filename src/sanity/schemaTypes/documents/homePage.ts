@@ -52,6 +52,12 @@ export const homePage = defineType({
             { name: "url", title: "Buton Linki", type: "string" },
           ],
         }),
+        defineField({
+          name: "youtubeLink",
+          title: "Tanıtım Videosu Linki (YouTube)",
+          type: "url",
+          description: "Örn: https://www.youtube.com/watch?v=...",
+        }),
       ],
     }),
     defineField({
