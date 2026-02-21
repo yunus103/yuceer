@@ -35,7 +35,7 @@ export default async function Footer() {
           <div className="lg:col-span-5 space-y-8">
             <Link href="/" className="inline-block">
                {logoUrl ? (
-                   <div className="relative h-16 w-48">
+                   <div className="relative h-24 w-72">
                        <Image 
                            src={logoUrl} 
                            alt={siteTitle} 
