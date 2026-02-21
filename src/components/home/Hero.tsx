@@ -23,9 +23,9 @@ interface HeroProps {
 
 export default function Hero({ data }: HeroProps) {
   // Safe defaults
-  const posterUrl = data?.heroPoster || "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?q=80&w=2070&auto=format&fit=crop";
-  const title = data?.heroTitle || "GELECEĞİN YAŞAM ALANLARINI İNŞA EDİYORUZ";
-  const subtitle = data?.heroSubtitle || "Doğal ahşabın sıcaklığını ve kalitesini modern yaşam alanlarınıza taşıyoruz.";
+  const posterUrl = data?.heroPoster || "";
+  const title = data?.heroTitle || "YÜCEER KERESTE";
+  const subtitle = data?.heroSubtitle || "Kızılçam hammadde kalitesini modern yaşam alanlarınıza taşıyoruz.";
   const youtubeLink = data?.youtubeLink;
   const ctaLabel = data?.heroCTA?.label || "Ürünlerimizi İnceleyin";
   const ctaUrl = data?.heroCTA?.url || "/urunler";
@@ -116,7 +116,7 @@ export default function Hero({ data }: HeroProps) {
                className="flex flex-col sm:flex-row items-center gap-4"
              >
                 <Link href={ctaUrl} className="inline-block w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto rounded-full bg-accent hover:bg-emerald-600 text-white px-8 py-6 text-base font-bold tracking-widest uppercase transition-all hover:scale-105 active:scale-95 group shadow-lg">
+                  <Button size="lg" className="w-full sm:w-auto rounded-full bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-6 text-base font-bold tracking-widest uppercase transition-all hover:scale-105 active:scale-95 group shadow-xl hover:shadow-emerald-600/20">
                     {ctaLabel} <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
