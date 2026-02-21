@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Package } from 'lucide-react'
+import { ArrowRight, Package, ShieldCheck, Hammer } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/Button'
 
 interface ProductCardProps { 
   id: string
@@ -16,64 +17,71 @@ interface ProductCardProps {
 
 export default function ProductCard({ id, title, shortDescription, category, image, imageAlt, woodType, className }: ProductCardProps) {
   return (
-    <Link href={`/urunler/${id}`} className={cn("group block", className)}>
-      <div className="flex flex-col h-full bg-white transition-all duration-500">
-        
-        {/* Image Frame - Minimal & Elegant */}
-        <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-neutral-50 border border-neutral-100/50 transition-all duration-500 group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] group-hover:-translate-y-2">
-          {image ? (
-            <Image
-              src={image}
-              alt={imageAlt || title}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-1000 scale-100 group-hover:scale-105"
-            />
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center text-neutral-200">
-              <Package className="w-12 h-12 mb-2 opacity-30" />
-            </div>
-          )}
-
-          {/* Minimal Tags */}
-          <div className="absolute top-6 left-6 flex flex-wrap gap-2">
-            {category && (
-              <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[9px] font-black text-emerald-700 uppercase tracking-widest shadow-sm border border-black/[0.03]">
-                {category}
-              </span>
-            )}
+    <div className={cn("group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden border border-neutral-200 shadow-sm hover:shadow-xl transition-all duration-500", className)}>
+      {/* Image Frame */}
+      <Link href={`/urunler/${id}`} className="block relative aspect-[4/3] bg-neutral-100 overflow-hidden">
+        {image ? (
+          <Image
+            src={image}
+            alt={imageAlt || title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center text-neutral-300 bg-neutral-50">
+            <Package className="w-12 h-12 mb-2" />
           </div>
+        )}
 
-          {/* Subtle Hover Action Overlay */}
-          <div className="absolute inset-0 bg-emerald-900/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          
-          <div className="absolute bottom-6 right-6 w-12 h-12 bg-white rounded-full flex items-center justify-center text-emerald-600 opacity-0 scale-75 translate-y-4 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 shadow-lg transition-all duration-500">
-            <ArrowRight className="w-5 h-5" />
+        {/* Badges Overlay */}
+        <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-bold text-neutral-800 shadow-sm border border-neutral-100">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>{category || 'Endüstriyel Ahşap'}</span>
+          </div>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900/90 backdrop-blur-sm rounded-full text-xs font-bold text-white shadow-sm w-fit">
+            <Hammer className="w-3.5 h-3.5 text-emerald-400" />
+            <span>{woodType || 'Dayanıklı Üretim'}</span>
           </div>
         </div>
 
-        {/* Text Section - Clean Typography */}
-        <div className="pt-6 px-3 flex-1 flex flex-col">
-          <h3 className="text-lg font-bold text-neutral-800 group-hover:text-emerald-700 transition-colors duration-300 line-clamp-1 leading-tight">
+        {/* Hover Overlay */}
+        <div className="absolute inset-0 bg-neutral-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+          <div className="translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+            <span className="px-6 py-3 bg-white text-neutral-900 font-bold rounded-full text-sm flex items-center gap-2 shadow-lg">
+              Detayları İncele <ArrowRight className="w-4 h-4" />
+            </span>
+          </div>
+        </div>
+      </Link>
+
+      {/* Text Section */}
+      <div className="p-6 flex-1 flex flex-col bg-white border-t border-neutral-100">
+        <Link href={`/urunler/${id}`} className="block">
+          <h3 className="text-xl font-bold text-neutral-900 group-hover:text-emerald-700 transition-colors duration-300 mb-2 leading-tight line-clamp-1">
             {title}
           </h3>
-          {shortDescription && (
-            <p className="mt-2 text-sm text-neutral-500 line-clamp-2 leading-relaxed font-medium">
-              {shortDescription}
-            </p>
-          )}
-          
-          <div className="mt-auto pt-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold text-neutral-400 group-hover:text-emerald-600 transition-colors uppercase tracking-widest">İNCELE</span>
-                <div className="w-6 h-[1px] bg-neutral-200 group-hover:w-10 group-hover:bg-emerald-600 transition-all duration-500" />
-            </div>
-            {woodType && (
-              <span className="text-[10px] text-neutral-300 font-medium italic">#{woodType}</span>
-            )}
-          </div>
+        </Link>
+        <p className="text-sm text-neutral-500 line-clamp-2 leading-relaxed mb-6 flex-1">
+          {shortDescription || 'Yüksek standartlarda üretilmiş, endüstriyel kullanım için ideal ahşap ürün yelpazesi. Uzun ömürlü ve güvenilir.'}
+        </p>
+        
+        {/* Buttons */}
+        <div className="mt-auto flex flex-col sm:flex-row items-center gap-3">
+          <Link href={`/urunler/${id}`} className="w-full sm:w-1/2">
+            <Button variant="outline" className="w-full h-11 rounded-xl border-neutral-200 text-neutral-800 font-bold text-xs uppercase tracking-widest hover:border-emerald-600 hover:text-emerald-600 transition-colors">
+              İncele
+            </Button>
+          </Link>
+          <Link href="/iletisim" className="w-full sm:w-1/2">
+            <Button className="w-full h-11 rounded-xl bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-700 transition-colors">
+              Teklif Al
+            </Button>
+          </Link>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
+

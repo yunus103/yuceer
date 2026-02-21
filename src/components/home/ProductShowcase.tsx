@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
-import { ArrowLeftRight, ArrowRight, Package } from 'lucide-react'
+import { ArrowRight, Package, ShieldCheck, TreePine } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface Product {
@@ -28,37 +28,37 @@ export default function ProductShowcase({ items }: ProductShowcaseProps) {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Section header */}
-        <div className="max-w-3xl mb-16 md:mb-20">
+        <div className="max-w-4xl mb-16 md:mb-20">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-[2px] bg-emerald-600 rounded-full" />
             <span className="text-emerald-700 font-bold tracking-[0.2em] uppercase text-[11px]">Ürün Grubu</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6 tracking-tight">
-            Öne Çıkan <span className="text-emerald-600">Koleksiyon</span>
+            Endüstriyel <span className="text-emerald-600">Ahşap Çözümlerimiz</span>
           </h2>
-          <p className="text-neutral-500 text-lg md:text-xl leading-relaxed font-normal max-w-2xl">
-            Sürdürülebilir kaynaklardan elde edilen, yüksek dayanıklılığa sahip ahşap ürünlerimizle yapılarınıza doğallık katıyoruz.
+          <p className="text-neutral-600 text-lg md:text-xl leading-relaxed font-normal">
+            Sürdürülebilir kaynaklardan elde edilen, yüksek dayanıklılığa sahip endüstriyel ahşap ve kereste ürünlerimizle projelerinize değer katıyoruz. Uluslararası standartlarda, ISPM-15 normlarına uygun, fırınlı ve emprenyeli seçeneklerimizle en zorlu lojistik ve inşaat ihtiyaçlarınız için güvenilir, uzun ömürlü çözümler sunuyoruz.
           </p>
         </div>
 
         {/* Product grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {items.map((product) => (
             <Link
               key={product._id}
               href={`/urunler/${product.slug || ''}`}
-              className="group block"
+              className="group block relative"
             >
-              <div className="h-full bg-white flex flex-col transition-all duration-500">
-                {/* Image Container - Fixed Aspect Ratio */}
-                <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-neutral-100 border border-neutral-100 transition-all duration-500 group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] group-hover:-translate-y-2">
+              <div className="h-full bg-white flex flex-col transition-all duration-500 rounded-[2rem] overflow-hidden border border-neutral-100 shadow-sm hover:shadow-xl">
+                {/* Image Container */}
+                <div className="relative aspect-[4/3] bg-neutral-100 overflow-hidden">
                   {product.mainImage ? (
                     <Image
                       src={product.mainImage}
                       alt={product.mainImageAlt || product.title}
                       fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-neutral-300">
@@ -66,29 +66,42 @@ export default function ProductShowcase({ items }: ProductShowcaseProps) {
                     </div>
                   )}
                   
-                  {/* Subtle Gradient Overlay */}
-                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {/* Floating Action Circle */}
-                  <div className="absolute bottom-6 right-6 w-12 h-12 bg-white rounded-full flex items-center justify-center text-neutral-900 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 shadow-xl">
-                    <ArrowRight className="w-5 h-5" />
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-neutral-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                    <div className="translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                      <span className="px-6 py-3 bg-white text-neutral-900 font-bold rounded-full text-sm flex items-center gap-2">
+                        Detayları İncele <ArrowRight className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Badges Overlay (Always visible) */}
+                  <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold text-neutral-800 shadow-sm">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Endüstriyel Sınıf</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900/80 backdrop-blur-sm rounded-full text-xs font-bold text-white shadow-sm w-fit">
+                      <TreePine className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Uzun Ömürlü</span>
+                    </div>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="pt-6 px-2 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-neutral-900 group-hover:text-emerald-700 transition-colors duration-300 line-clamp-1 leading-tight mb-2">
+                <div className="p-6 flex-1 flex flex-col bg-white z-10 border-t border-neutral-100">
+                  <h3 className="text-xl font-bold text-neutral-900 mb-2 leading-tight">
                     {product.title}
                   </h3>
-                  {product.shortDescription && (
-                    <p className="text-sm text-neutral-500 line-clamp-2 leading-relaxed mb-3">
-                        {product.shortDescription}
+                  {product.shortDescription ? (
+                    <p className="text-neutral-500 text-sm line-clamp-2 leading-relaxed">
+                      {product.shortDescription}
+                    </p>
+                  ) : (
+                    <p className="text-neutral-500 text-sm line-clamp-2 leading-relaxed">
+                      Yüksek kalite standartlarında üretilmiş, dayanıklı ve güvenilir endüstriyel ahşap çözümleri.
                     </p>
                   )}
-                  <div className="mt-auto flex items-center gap-2">
-                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest group-hover:text-emerald-600 transition-colors">Detayı İncele</span>
-                    <div className="w-0 group-hover:w-12 h-[1px] bg-emerald-600 transition-all duration-500" />
-                  </div>
                 </div>
               </div>
             </Link>
@@ -96,10 +109,10 @@ export default function ProductShowcase({ items }: ProductShowcaseProps) {
         </div>
 
         {/* Bottom Action */}
-        <div className="mt-20 flex justify-center md:justify-start">
+        <div className="mt-16 flex justify-center">
             <Link href="/urunler" className="group">
-                <Button variant="outline" className="h-16 px-10 rounded-full border-neutral-200 text-neutral-900 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 transition-all duration-500 font-bold uppercase tracking-widest text-xs gap-3">
-                    BÜTÜN ÜRÜNLERİ GÖR <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                <Button variant="outline" className="h-16 px-10 rounded-full border-neutral-200 text-neutral-900 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 transition-all duration-500 font-bold uppercase tracking-widest text-xs gap-3 shadow-sm">
+                    TÜM ÜRÜNLERİ İNCELE <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                 </Button>
             </Link>
         </div>
@@ -107,3 +120,4 @@ export default function ProductShowcase({ items }: ProductShowcaseProps) {
     </section>
   )
 }
+

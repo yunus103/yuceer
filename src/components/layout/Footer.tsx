@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail, ArrowUp } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail, ArrowUp, Clock } from 'lucide-react'
 import { client } from "@/sanity/lib/client";
 import { SETTINGS_QUERY } from "@/sanity/lib/queries";
+
 import { navLinks } from '@/lib/navigation'
+import { ScrollToTopButton } from '@/components/ui/ScrollToTopButton'
 
 export default async function Footer() {
   const settings = await client.fetch(SETTINGS_QUERY);
@@ -13,8 +15,12 @@ export default async function Footer() {
   const logoUrl = settings?.logo;
   const address = settings?.contact?.address || "Keresteciler Sitesi, No: 123, Ostim, Ankara, Türkiye";
   const phone = settings?.contact?.phone || "+90 312 123 45 67";
+  const phone2 = settings?.contact?.phone2;
   const email = settings?.contact?.email || "info@yuceerkereste.com";
+  const workingHours = settings?.contact?.workingHours || "Pazartesi - Cumartesi: 08:30 - 18:30";
   const socials = settings?.socials || [];
+  const footerTitle = settings?.footerTitle || "ESTETİK YAPILAR İÇİN\nDOĞAL KERESTE";
+  const footerDescription = settings?.footerDescription || "Modern üretim tesislerimizde işlenen, fırınlanmış ve dayanıklı kereste ürünleri ile projelerinize değer katıyoruz.";
 
 
   return (
@@ -42,38 +48,27 @@ export default async function Footer() {
                )}
             </Link>
             
-            <h3 className="text-2xl md:text-3xl font-bold leading-tight text-white/90 max-w-md">
-              ESTETİK YAPILAR İÇİN <br/>
-              <span className="text-primary">DOĞAL KERESTE</span>
+            <h3 className="text-2xl md:text-3xl font-bold leading-tight text-white/90 max-w-md whitespace-pre-line">
+              {footerTitle}
             </h3>
 
             <p className="text-sm text-gray-400 leading-relaxed max-w-sm">
-              Modern üretim tesislerimizde işlenen, fırınlanmış ve dayanıklı kereste ürünleri ile projelerinize değer katıyoruz.
+              {footerDescription}
             </p>
 
             {/* Socials */}
-            <div className="flex gap-4 pt-4">
-              {socials.length > 0 ? (
-                  socials.map((social: any, idx: number) => (
+            {socials && socials.length > 0 && (
+              <div className="flex gap-4 pt-4">
+                  {socials.map((social: any, idx: number) => (
                     <Link key={idx} href={social.url} target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-primary hover:text-white transition-all duration-300 text-gray-400">
-                        {/* Simple mapping for common icons, fallback to Link icon */}
                         {social.platform.toLowerCase().includes('instagram') ? <Instagram className="w-5 h-5" /> :
                          social.platform.toLowerCase().includes('facebook') ? <Facebook className="w-5 h-5" /> :
                          social.platform.toLowerCase().includes('linkedin') ? <Linkedin className="w-5 h-5" /> :
                          <Mail className="w-5 h-5" />}
                     </Link>
-                  ))
-              ) : (
-                <>
-                  <Link href="#" className="p-3 bg-white/5 rounded-full hover:bg-primary hover:text-white transition-all duration-300 text-gray-400">
-                    <Instagram className="w-5 h-5" />
-                  </Link>
-                  <Link href="#" className="p-3 bg-white/5 rounded-full hover:bg-primary hover:text-white transition-all duration-300 text-gray-400">
-                    <Facebook className="w-5 h-5" />
-                  </Link>
-                </>
-              )}
-            </div>
+                  ))}
+              </div>
+            )}
           </div>
 
           {/* Spacer Column */}
@@ -117,6 +112,9 @@ export default async function Footer() {
                     <div>
                         <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Telefon</span>
                         <a href={`tel:${phone}`} className="text-gray-300 hover:text-white transition-colors block text-xs">{phone}</a>
+                        {phone2 && (
+                          <a href={`tel:${phone2}`} className="text-gray-300 hover:text-white transition-colors block text-xs mt-1">{phone2}</a>
+                        )}
                     </div>
                  </div>
               </li>
@@ -131,6 +129,17 @@ export default async function Footer() {
                     </div>
                  </div>
               </li>
+              <li className="group">
+                 <div className="flex items-start gap-3">
+                    <div className="p-2 bg-white/5 rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <Clock className="w-4 h-4" />
+                    </div>
+                    <div>
+                        <span className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Çalışma Saatleri</span>
+                        <p className="text-gray-300 leading-relaxed text-xs whitespace-pre-line">{workingHours}</p>
+                    </div>
+                 </div>
+              </li>
             </ul>
           </div>
 
@@ -142,13 +151,7 @@ export default async function Footer() {
             &copy; {new Date().getFullYear()} {siteTitle}. Tüm hakları saklıdır.
           </p>
           
-          <button 
-             className="w-10 h-10 rounded-full bg-white/5 hover:bg-primary text-white flex items-center justify-center transition-all duration-300 group"
-             title="Yukarı Çık"
-            //  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} // Client component needed for onClick, keeping it simple server component for now or standard link
-          >
-             <ArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
-          </button>
+          <ScrollToTopButton />
         </div>
       </div>
     </footer>

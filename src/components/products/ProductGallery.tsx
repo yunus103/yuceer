@@ -21,7 +21,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
 
   if (validImages.length === 0) {
     return (
-      <div className="h-[400px] bg-gray-50 rounded-2xl flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-200">
+      <div className="h-[400px] bg-neutral-50 flex flex-col items-center justify-center text-neutral-300 border border-neutral-100">
         <Package className="w-16 h-16 mb-4 opacity-50" />
         <span className="text-sm font-medium">Resim bulunmamaktadır</span>
       </div>
@@ -30,9 +30,10 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
 
   return (
     <div className="space-y-4">
-      <div className="relative h-[350px] md:h-[500px] w-full bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
+      {/* Main Image */}
+      <div className="relative aspect-[4/3] w-full bg-neutral-100 overflow-hidden">
         {imageError ? (
-          <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
+          <div className="w-full h-full flex flex-col items-center justify-center text-neutral-400">
             <Package className="w-12 h-12 mb-2 opacity-50" />
             <span className="text-sm">Resim yüklenemedi</span>
           </div>
@@ -41,13 +42,15 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
             src={selectedImage.url}
             alt={selectedImage.alt || title}
             fill
-            className="object-contain p-4"
+            className="object-cover transition-opacity duration-500"
             onError={() => setImageError(true)}
           />
         )}
       </div>
+
+      {/* Thumbnails */}
       {validImages.length > 1 && (
-        <div className="flex gap-3 overflow-x-auto pb-2">
+        <div className="flex gap-3 overflow-x-auto pb-2 px-2">
           {validImages.map((img, index) => (
             <button
               key={index}
@@ -56,10 +59,10 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                 setImageError(false)
               }}
               className={cn(
-                "relative h-20 w-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all",
+                "relative h-20 w-20 shrink-0 rounded-[1rem] overflow-hidden border-2 transition-all duration-300",
                 selectedImage.url === img.url
-                  ? "border-primary shadow-md"
-                  : "border-gray-200 opacity-60 hover:opacity-100 hover:border-gray-300"
+                  ? "border-emerald-600 shadow-md scale-100"
+                  : "border-transparent opacity-60 hover:opacity-100 hover:scale-105"
               )}
             >
               <Image
@@ -75,3 +78,4 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
     </div>
   )
 }
+

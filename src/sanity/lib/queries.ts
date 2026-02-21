@@ -8,10 +8,13 @@ export const SETTINGS_QUERY = defineQuery(`
     contact {
       address,
       phone,
+      phone2,
       email,
       workingHours,
       mapEmbed
-    }
+    },
+    footerTitle,
+    footerDescription
   }
 `);
 

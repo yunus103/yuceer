@@ -44,7 +44,8 @@ export const settings = defineType({
       type: "object",
       fields: [
         { name: "address", title: "Adres", type: "text" },
-        { name: "phone", title: "Telefon", type: "string" },
+        { name: "phone", title: "Telefon 1", type: "string" },
+        { name: "phone2", title: "Telefon 2", type: "string" },
         { name: "email", title: "E-posta", type: "string" },
         {
           name: "workingHours",
@@ -55,6 +56,18 @@ export const settings = defineType({
         },
         { name: "mapEmbed", title: "Google Maps Embed Kodu", type: "text" },
       ],
+    }),
+    defineField({
+      name: "footerTitle",
+      title: "Footer Başlığı",
+      type: "string",
+      description: "Örn: ESTETİK YAPILAR İÇİN DOĞAL KERESTE",
+    }),
+    defineField({
+      name: "footerDescription",
+      title: "Footer Açıklaması",
+      type: "text",
+      description: "Örn: Modern üretim tesislerimizde...",
     }),
     defineField({
       name: "seo",
