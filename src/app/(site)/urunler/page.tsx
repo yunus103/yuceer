@@ -38,47 +38,18 @@ export default async function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <PageHero title="Ürün Kataloğu" />
+      <PageHero 
+        title="Ürün Kataloğu" 
+        subtitle="İnşaat, sanayi ve dekorasyon projeleriniz için uluslararası standartlara uygun, dayanıklı ve yüksek kaliteli endüstriyel ahşap çözümleri."
+      />
 
       {/* Main Content Area */}
       <section className="relative py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           
-          {/* Header & SEO Intro */}
-          <div className="max-w-4xl mb-16">
-            <h1 className="text-4xl md:text-5xl font-black text-neutral-900 mb-8 uppercase tracking-tighter">
-              Endüstriyel <span className="text-emerald-600">Ahşap Çözümleri</span>
-            </h1>
-            
-            <div className="space-y-6 text-neutral-600 text-lg leading-relaxed font-medium">
-              <p>
-                Yüceer Kereste olarak, yılların verdiği deneyimle projeleriniz için en uygun endüstriyel ahşap ve kereste ürünlerini sunuyoruz. İster yüksek taşıma kapasitesine sahip ambalaj çözümleri olsun, ister inşaat kalıp sistemlerinde kullanılan dayanıklı keresteler, her bir ürünümüz titiz kalite kontrol süreçlerinden geçer.
-              </p>
-              <p>
-                Orman ürünlerimiz, sürdürülebilir kaynaklardan elde edilir ve çevresel standartlara uygun olarak işlenir. Özellikle ısıl işlem (ISPM-15) ve fırınlama gibi uluslararası normları karşılayan işlemlerle, ahşabın dayanıklılığı ve ömrü maksimize edilmektedir. Lojistik ve istifleme süreçlerinizde sorunsuz bir deneyim yaşamanız için özel ebatlama seçenekleri sunuyoruz.
-              </p>
-              <p>
-                Aşağıdaki ürün kataloğumuzdan standart ölçülerdeki üretimlerimizi inceleyebilir veya projelerinize özel ölçülerde üretim detayları için bizimle iletişime geçebilirsiniz. İhtiyaç duyduğunuz tüm teknik spesifikasyonlarda ve sertifikasyon süreçlerinde yanınızdayız.
-              </p>
-            </div>
-          </div>
-
-          {/* Filters (Mock) */}
-          <div className="flex flex-wrap items-center gap-4 mb-16 pb-8 border-b border-neutral-100">
-            <span className="text-sm font-bold text-neutral-400 uppercase tracking-widest mr-4">Kategoriler :</span>
-            {['Tümü', 'İnşaat Kerestesi', 'Ahşap Palet', 'Ambalaj Sandığı', 'Plywood'].map((cat, idx) => (
-              <button 
-                key={cat} 
-                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${idx === 0 ? 'bg-emerald-600 text-white shadow-md' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
           {/* Grid Layout */}
           {products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {products.map((product: any) => (
                 <ProductCard
                   key={product._id}
@@ -119,7 +90,7 @@ export default async function ProductsPage() {
             Yüksek Kapasiteli <span className="text-emerald-400">Üretim Tesisi</span>
           </h2>
           <p className="text-neutral-300 text-lg md:text-xl font-medium">
-            20.000 m² açık ve kapalı alanımızla, en büyük projeleriniz için kesintisiz ahşap tedariği ve hızlı sevkiyat garantisi sunuyoruz.
+            25.000 m² tomruk sahası ve aylık 5.000 m³ üretim kapasitemizle büyük hacimli projeleriniz için kesintisiz kereste tedariği ve zamanında sevkiyat sağlıyoruz.
           </p>
         </div>
       </section>

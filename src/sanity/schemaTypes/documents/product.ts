@@ -76,6 +76,42 @@ export const product = defineType({
       type: "technicalSpecs",
     }),
     defineField({
+      name: "applications",
+      title: "Kullanım Alanları",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "certificates",
+      title: "Sertifikalar",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "title", title: "Başlık (Örn: ISPM-15)", type: "string" },
+            {
+              name: "description",
+              title: "Açıklama (Örn: Uluslararası Isıl İşlem)",
+              type: "string",
+            },
+            {
+              name: "iconType",
+              title: "İkon",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Ağaç", value: "TreePine" },
+                  { title: "Kutu", value: "Box" },
+                  { title: "Kalkan", value: "ShieldCheck" },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: "seo",
       title: "SEO Ayarları",
       type: "seo",

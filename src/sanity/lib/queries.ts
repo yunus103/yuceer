@@ -128,11 +128,28 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`
       label,
       value
     },
+    applications,
+    certificates[] {
+      title,
+      description,
+      iconType
+    },
     seo {
       metaTitle,
       metaDescription,
       keywords,
       "ogImage": ogImage.asset->url
     }
+  }
+`);
+
+export const RELATED_PRODUCTS_QUERY = defineQuery(`
+  *[_type == "product" && slug.current != $slug] | order(_createdAt desc)[0...3] {
+    _id,
+    title,
+    shortDescription,
+    "slug": slug.current,
+    "mainImage": mainImage.asset->url,
+    "mainImageAlt": mainImage.alt
   }
 `);

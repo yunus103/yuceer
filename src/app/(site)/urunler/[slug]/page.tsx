@@ -4,8 +4,9 @@ import ProductSpecs from '@/components/products/ProductSpecs'
 import { Phone, CheckCircle, Info, ArrowLeft, Package, TreePine, Tag, Ruler, ShieldCheck, Factory, Box } from 'lucide-react'
 import Link from 'next/link'
 import { client } from '@/sanity/lib/client'
-import { PRODUCT_BY_SLUG_QUERY } from '@/sanity/lib/queries'
+import { PRODUCT_BY_SLUG_QUERY, RELATED_PRODUCTS_QUERY } from '@/sanity/lib/queries'
 import { notFound } from 'next/navigation'
+import ProductCard from '@/components/products/ProductCard'
 import { PortableText } from '@portabletext/react'
 
 const portableTextComponents = {
@@ -77,8 +78,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const { slug } = await params;
 
   let product: any = null;
+  let relatedProducts: any[] = [];
   try {
     product = await client.fetch(PRODUCT_BY_SLUG_QUERY, { slug })
+    relatedProducts = await client.fetch(RELATED_PRODUCTS_QUERY, { slug })
   } catch {
     return (
       <div className="min-h-screen flex items-center justify-center bg-neutral-50 pt-32 px-4">
@@ -106,6 +109,21 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     { url: product.mainImage, alt: product.mainImageAlt },
     ...(product.gallery || [])
   ].filter(img => img.url)
+
+  const applications = product.applications?.length ? product.applications : ['İnşaat ve Kalıp Sistemleri', 'Endüstriyel Depolama', 'Lojistik ve Sevkiyat', 'Ağır Sanayi Ambalajlama'];
+  const certificates = product.certificates?.length ? product.certificates : [
+    { title: "ISPM-15", description: "Uluslararası Isıl İşlem", iconType: "TreePine" },
+    { title: "ISO 9001", description: "Kalite Yönetim Sistemi", iconType: "Box" },
+  ];
+
+  const renderIcon = (type: string) => {
+    switch (type) {
+      case 'TreePine': return <TreePine className="w-6 h-6" />;
+      case 'Box': return <Box className="w-6 h-6" />;
+      case 'ShieldCheck': return <ShieldCheck className="w-6 h-6" />;
+      default: return <ShieldCheck className="w-6 h-6" />;
+    }
+  }
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -161,8 +179,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-10">
                 <div className="flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors">
                   <ShieldCheck className="w-6 h-6 text-emerald-600 mb-2" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Dayanıklılık</span>
-                  <span className="text-sm font-bold text-neutral-800 mt-1">Sınıf 1 Kalite</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Hammadde</span>
+                  <span className="text-sm font-bold text-neutral-800 mt-1">Kızılçam</span>
                 </div>
                 <div className="flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors">
                   <Tag className="w-6 h-6 text-emerald-600 mb-2" />
@@ -238,7 +256,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 <Factory className="w-5 h-5 text-emerald-600" /> Kullanım Alanları
               </h3>
               <ul className="space-y-4">
-                {['İnşaat ve Kalıp Sistemleri', 'Endüstriyel Depolama', 'Lojistik ve Sevkiyat', 'Ağır Sanayi Ambalajlama'].map((area, idx) => (
+                {applications.map((area: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
                     <span className="text-neutral-700 font-medium text-sm">{area}</span>
@@ -252,24 +270,17 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 <ShieldCheck className="w-5 h-5 text-emerald-400" /> Sertifikalar
               </h3>
               <div className="space-y-4">
-                <div className="bg-white/10 p-4 rounded-xl border border-white/5 flex items-center gap-4">
-                  <div className="bg-emerald-500 p-2 rounded-lg text-white">
-                    <TreePine className="w-6 h-6" />
+                {certificates.map((cert: any, idx: number) => (
+                  <div key={idx} className="bg-white/10 p-4 rounded-xl border border-white/5 flex items-center gap-4">
+                    <div className="bg-emerald-500 p-2 rounded-lg text-white">
+                      {renderIcon(cert.iconType)}
+                    </div>
+                    <div>
+                      <div className="font-bold text-sm tracking-wide">{cert.title}</div>
+                      <div className="text-xs text-neutral-400 mt-1 font-medium">{cert.description}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-bold text-sm tracking-wide">ISPM-15</div>
-                    <div className="text-xs text-neutral-400 mt-1 font-medium">Uluslararası Isıl İşlem</div>
-                  </div>
-                </div>
-                <div className="bg-white/10 p-4 rounded-xl border border-white/5 flex items-center gap-4">
-                  <div className="bg-neutral-700 p-2 rounded-lg text-white">
-                    <Box className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm tracking-wide">ISO 9001</div>
-                    <div className="text-xs text-neutral-400 mt-1 font-medium">Kalite Yönetim Sistemi</div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
@@ -278,24 +289,44 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </div>
 
       {/* Related Products Section */}
-      <section className="bg-white py-24 border-t border-neutral-100">
-        <div className="container mx-auto px-4 sm:px-6 relative text-center max-w-2xl">
-          <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-3">
-            <Package className="w-8 h-8" />
+      {relatedProducts && relatedProducts.length > 0 && (
+        <section className="bg-white py-24 border-t border-neutral-100">
+          <div className="container mx-auto px-4 sm:px-6 relative">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-3">
+                <Package className="w-8 h-8" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-neutral-900 mb-6 uppercase tracking-tighter">
+                Diğer <span className="text-emerald-600">Ürünlerimizi</span> İnceleyin
+              </h2>
+              <p className="text-neutral-500 text-lg font-medium leading-relaxed">
+                Projeleriniz için ihtiyacınız olan tüm ahşap ürün gruplarını kapsamlı kataloğumuzda inceleyin.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              {relatedProducts.map((p) => (
+                <ProductCard 
+                  key={p._id}
+                  id={p.slug}
+                  title={p.title}
+                  shortDescription={p.shortDescription}
+                  image={p.mainImage}
+                  imageAlt={p.mainImageAlt}
+                />
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Link href="/urunler">
+                <Button className="h-16 px-12 rounded-[1.2rem] bg-neutral-900 text-white font-black uppercase tracking-widest hover:bg-emerald-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                  Tüm Ürün Kataloğu
+                </Button>
+              </Link>
+            </div>
           </div>
-          <h2 className="text-3xl md:text-4xl font-black text-neutral-900 mb-6 uppercase tracking-tighter">
-            Diğer <span className="text-emerald-600">Çözümlerimizi</span> Keşfedin
-          </h2>
-          <p className="text-neutral-500 text-lg mb-10 font-medium leading-relaxed">
-            Projeleriniz için ihtiyacınız olan tüm ahşap ürün gruplarını kapsamlı kataloğumuzda inceleyin.
-          </p>
-          <Link href="/urunler">
-            <Button className="h-16 px-12 rounded-[1.2rem] bg-neutral-900 text-white font-black uppercase tracking-widest hover:bg-emerald-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-              Tüm Ürün Kataloğu
-            </Button>
-          </Link>
-        </div>
-      </section>
+        </section>
+      )}
 
     </div>
   )
