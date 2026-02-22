@@ -3,5 +3,6 @@ export const navLinks = [
   { href: "/hakkimizda", label: "Kurumsal" },
   { href: "/belgelerimiz", label: "Belgelerimiz" },
   { href: "/urunler", label: "Ürünler" },
+  { href: "/blog", label: "Blog" },
   { href: "/iletisim", label: "İletişim" },
 ];

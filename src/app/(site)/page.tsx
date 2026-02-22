@@ -4,6 +4,7 @@ import WhyUs from '@/components/home/WhyUs'
 import ProductShowcase from '@/components/home/ProductShowcase'
 import ProductionInfrastructure from '@/components/home/ProductionInfrastructure'
 import ContactSection from '@/components/home/ContactSection'
+import BlogSection from '@/components/home/BlogSection'
 import { client } from '@/sanity/lib/client'
 import { HOME_PAGE_QUERY } from '@/sanity/lib/queries'
 
@@ -20,6 +21,7 @@ export default async function Home() {
       <WhyUs data={homeData?.home?.whyChooseUs} />
       <ProductShowcase items={homeData?.products} />
       <ProductionInfrastructure />
+      <BlogSection posts={homeData?.posts} />
       <ContactSection backgroundImage={homeData?.about?.historyImage} />
     </div>
   )

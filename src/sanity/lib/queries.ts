@@ -65,6 +65,15 @@ export const HOME_PAGE_QUERY = defineQuery(`
       "slug": slug.current,
       "mainImage": mainImage.asset->url,
       "mainImageAlt": mainImage.alt
+    },
+    "posts": *[_type == "post"] | order(publishedAt desc)[0...3] {
+      _id,
+      title,
+      excerpt,
+      "slug": slug.current,
+      publishedAt,
+      "mainImage": mainImage.asset->url,
+      "mainImageAlt": mainImage.alt
     }
   }
 `);
@@ -152,5 +161,43 @@ export const RELATED_PRODUCTS_QUERY = defineQuery(`
     "slug": slug.current,
     "mainImage": mainImage.asset->url,
     "mainImageAlt": mainImage.alt
+  }
+`);
+
+export const ALL_POSTS_QUERY = defineQuery(`
+  *[_type == "post"] | order(publishedAt desc) {
+    _id,
+    title,
+    excerpt,
+    "slug": slug.current,
+    publishedAt,
+    "mainImage": mainImage.asset->url,
+    "mainImageAlt": mainImage.alt
+  }
+`);
+
+export const POST_BY_SLUG_QUERY = defineQuery(`
+  *[_type == "post" && slug.current == $slug][0] {
+    _id,
+    title,
+    excerpt,
+    publishedAt,
+    author,
+    "mainImage": mainImage.asset->url,
+    "mainImageAlt": mainImage.alt,
+    content[] {
+      ...,
+      _type == "image" => {
+        "url": asset->url,
+        alt,
+        float
+      }
+    },
+    seo {
+      metaTitle,
+      metaDescription,
+      keywords,
+      "ogImage": ogImage.asset->url
+    }
   }
 `);
