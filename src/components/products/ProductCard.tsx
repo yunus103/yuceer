@@ -17,7 +17,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ id, title, shortDescription, category, image, imageAlt, woodType, className }: ProductCardProps) {
   return (
-    <div className={cn("group flex flex-col h-full bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 border border-neutral-100", className)}>
+    <div className={cn("group flex flex-col h-full bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-[0_30px_50px_-15px_rgba(16,185,129,0.15)] hover:-translate-y-2 transition-all duration-500 border border-neutral-100", className)}>
       {/* Image Frame */}
       <Link href={`/urunler/${id}`} className="block relative aspect-[4/3] bg-neutral-100 overflow-hidden">
         {image ? (

@@ -58,7 +58,7 @@ export const HOME_PAGE_QUERY = defineQuery(`
       "historyImage": historyImage.asset->url,
       foundingYear
     },
-    "products": *[_type == "product"] | order(_createdAt desc)[0...4] {
+    "products": *[_type == "product"] | order(_createdAt desc)[0...6] {
       _id,
       title,
       shortDescription,
