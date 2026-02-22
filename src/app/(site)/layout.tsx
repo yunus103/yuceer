@@ -13,7 +13,12 @@ export default async function SiteLayout({
 
   return (
     <>
-      <Navbar logo={settings?.logo} />
+      <Navbar 
+        logo={settings?.logo} 
+        phone={settings?.contact?.phone}
+        phone2={settings?.contact?.phone2}
+        email={settings?.contact?.email}
+      />
       <main className="min-h-screen">
         {children}
       </main>

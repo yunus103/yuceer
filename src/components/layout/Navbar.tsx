@@ -13,9 +13,12 @@ const MotionDiv = motion.create('div')
 
 interface NavbarProps {
   logo?: string
+  phone?: string
+  phone2?: string
+  email?: string
 }
 
-export default function Navbar({ logo }: NavbarProps) {
+export default function Navbar({ logo, phone, phone2, email }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
@@ -165,14 +168,24 @@ export default function Navbar({ logo }: NavbarProps) {
               
               <div className="mt-auto pt-10 border-t border-white/10">
                 <div className="flex flex-col gap-4 text-sm text-white/60">
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-primary" />
-                    <span>+90 555 123 45 67</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-primary" />
-                    <span>info@yuceerkereste.com</span>
-                  </div>
+                  {phone && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-primary" />
+                      <a href={`tel:${phone.replace(/\s+/g, '')}`} className="hover:text-emerald-500 transition-colors">{phone}</a>
+                    </div>
+                  )}
+                  {phone2 && (
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-primary" />
+                      <a href={`tel:${phone2.replace(/\s+/g, '')}`} className="hover:text-emerald-500 transition-colors">{phone2}</a>
+                    </div>
+                  )}
+                  {email && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-primary" />
+                      <a href={`mailto:${email}`} className="hover:text-emerald-500 transition-colors">{email}</a>
+                    </div>
+                  )}
                 </div>
               </div>
             </MotionDiv>

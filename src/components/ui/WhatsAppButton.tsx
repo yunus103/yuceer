@@ -12,8 +12,17 @@ export default function WhatsAppButton({ phone }: WhatsAppButtonProps) {
   if (!phone) return null
 
   // Clean phone number for WhatsApp link: remove everything except digits
-  const cleanPhone = phone.replace(/\D/g, '')
-  const whatsappUrl = `https://wa.me/${cleanPhone}`
+  let cleanPhone = phone.replace(/\D/g, '')
+  
+  // Ensure the number starts with the Turkish country code (90) if no other country code is provided
+  if (cleanPhone.startsWith('0')) {
+    cleanPhone = '90' + cleanPhone.substring(1)
+  } else if (!cleanPhone.startsWith('90') && cleanPhone.length === 10) {
+    cleanPhone = '90' + cleanPhone
+  }
+
+  // api.whatsapp.com is generally more reliable across desktop, android and iOS Safari
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}`
 
   return (
     <motion.div
@@ -22,7 +31,7 @@ export default function WhatsAppButton({ phone }: WhatsAppButtonProps) {
       transition={{ delay: 1, type: 'spring', stiffness: 260, damping: 20 }}
       className="fixed bottom-8 right-8 z-[60]"
     >
-      <Link
+      <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
@@ -46,7 +55,7 @@ export default function WhatsAppButton({ phone }: WhatsAppButtonProps) {
 
         {/* Pulse Effect */}
         <span className="absolute inset-0 rounded-full bg-[#1da851] opacity-40 animate-ping group-hover:hidden" />
-      </Link>
+      </a>
     </motion.div>
   )
 }

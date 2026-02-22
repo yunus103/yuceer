@@ -111,10 +111,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   ].filter(img => img.url)
 
   const applications = product.applications?.length ? product.applications : ['İnşaat ve Kalıp Sistemleri', 'Endüstriyel Depolama', 'Lojistik ve Sevkiyat', 'Ağır Sanayi Ambalajlama'];
-  const certificates = product.certificates?.length ? product.certificates : [
-    { title: "ISPM-15", description: "Uluslararası Isıl İşlem", iconType: "TreePine" },
-    { title: "ISO 9001", description: "Kalite Yönetim Sistemi", iconType: "Box" },
-  ];
+  const certificates = product.certificates || [];
 
   const renderIcon = (type: string) => {
     switch (type) {
@@ -175,23 +172,29 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 )}
               </div>
 
-              {/* 3 Highlighted Technical Specs */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-10">
-                <div className="flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors">
-                  <ShieldCheck className="w-6 h-6 text-emerald-600 mb-2" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Hammadde</span>
-                  <span className="text-sm font-bold text-neutral-800 mt-1">Kızılçam, Sedir, Karaçam</span>
-                </div>
-                <div className="flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors">
-                  <Tag className="w-6 h-6 text-emerald-600 mb-2" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Kategori</span>
-                  <span className="text-sm font-bold text-neutral-800 mt-1">{product.category || 'Endüstriyel'}</span>
-                </div>
-                <div className="flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors col-span-2 sm:col-span-1">
-                  <Ruler className="w-6 h-6 text-emerald-600 mb-2" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Üretim</span>
-                  <span className="text-sm font-bold text-neutral-800 mt-1">Özel Ölçü</span>
-                </div>
+              {/* Highlighted Technical Specs */}
+              <div className="flex flex-wrap gap-3 mb-10 justify-start">
+                {product.material?.toLowerCase() !== 'null' && (
+                  <div className="flex-1 min-w-[120px] flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors">
+                    <ShieldCheck className="w-6 h-6 text-emerald-600 mb-2" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Hammadde</span>
+                    <span className="text-sm font-bold text-neutral-800 mt-1">{product.material || 'Kızılçam, Sedir, Karaçam'}</span>
+                  </div>
+                )}
+                {product.category?.toLowerCase() !== 'null' && (
+                  <div className="flex-1 min-w-[120px] flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors">
+                    <Tag className="w-6 h-6 text-emerald-600 mb-2" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Kategori</span>
+                    <span className="text-sm font-bold text-neutral-800 mt-1">{product.category || 'Endüstriyel'}</span>
+                  </div>
+                )}
+                {product.productionType?.toLowerCase() !== 'null' && (
+                  <div className="flex-1 min-w-[120px] flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors">
+                    <Ruler className="w-6 h-6 text-emerald-600 mb-2" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Üretim</span>
+                    <span className="text-sm font-bold text-neutral-800 mt-1">{product.productionType || 'Özel Ölçü'}</span>
+                  </div>
+                )}
               </div>
 
               {/* Strong CTA */}
@@ -265,24 +268,26 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </ul>
             </div>
 
-            <div className="bg-neutral-900 p-8 rounded-[2rem] shadow-lg text-white">
-              <h3 className="text-lg font-black mb-6 uppercase tracking-tight flex items-center gap-2 text-white">
-                <ShieldCheck className="w-5 h-5 text-emerald-400" /> Sertifikalar
-              </h3>
-              <div className="space-y-4">
-                {certificates.map((cert: any, idx: number) => (
-                  <div key={idx} className="bg-white/10 p-4 rounded-xl border border-white/5 flex items-center gap-4">
-                    <div className="bg-emerald-500 p-2 rounded-lg text-white">
-                      {renderIcon(cert.iconType)}
+            {certificates.length > 0 && (
+              <div className="bg-neutral-900 p-8 rounded-[2rem] shadow-lg text-white">
+                <h3 className="text-lg font-black mb-6 uppercase tracking-tight flex items-center gap-2 text-white">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" /> Sertifikalar
+                </h3>
+                <div className="space-y-4">
+                  {certificates.map((cert: any, idx: number) => (
+                    <div key={idx} className="bg-white/10 p-4 rounded-xl border border-white/5 flex items-center gap-4">
+                      <div className="bg-emerald-500 p-2 rounded-lg text-white">
+                        {renderIcon(cert.iconType)}
+                      </div>
+                      <div>
+                        <div className="font-bold text-sm tracking-wide">{cert.title}</div>
+                        <div className="text-xs text-neutral-400 mt-1 font-medium">{cert.description}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-bold text-sm tracking-wide">{cert.title}</div>
-                      <div className="text-xs text-neutral-400 mt-1 font-medium">{cert.description}</div>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
           </div>
         </div>

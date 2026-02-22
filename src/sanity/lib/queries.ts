@@ -128,6 +128,9 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`
     title,
     shortDescription,
     description,
+    material,
+    category,
+    productionType,
     "mainImage": mainImage.asset->url,
     "mainImageAlt": mainImage.alt,
     "gallery": gallery[] {

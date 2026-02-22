@@ -79,6 +79,24 @@ export const product = defineType({
       of: [{ type: "block" }],
     }),
     defineField({
+      name: "material",
+      title: "Hammadde",
+      type: "string",
+      description: "Örn: Kızılçam, Sedir, Karaçam",
+    }),
+    defineField({
+      name: "category",
+      title: "Kategori",
+      type: "string",
+      description: "Örn: Endüstriyel",
+    }),
+    defineField({
+      name: "productionType",
+      title: "Üretim",
+      type: "string",
+      description: "Örn: Özel Ölçü",
+    }),
+    defineField({
       name: "technicalSpecs",
       title: "Teknik Özellikler",
       type: "technicalSpecs",

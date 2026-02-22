@@ -74,7 +74,7 @@ export default async function ContactPage() {
                  <div className="w-14 h-14 bg-emerald-50 border border-emerald-100 rounded-full flex items-center justify-center text-emerald-600 mb-5 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
                     <MapPin className="w-6 h-6" />
                  </div>
-                 <h3 className="font-bold text-lg mb-2 text-neutral-900">Merkez Ofis</h3>
+                 <h3 className="font-bold text-lg mb-2 text-neutral-900">Fabrika</h3>
                  <p className="text-neutral-600 text-start leading-relaxed text-sm">
                     {address}
                  </p>
