@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import { client } from "@/sanity/lib/client";
 import { SETTINGS_QUERY } from "@/sanity/lib/queries";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
+import SmoothScroll from "@/components/ui/SmoothScroll";
 
 export default async function SiteLayout({
   children,
@@ -12,7 +13,7 @@ export default async function SiteLayout({
   const settings = await client.fetch(SETTINGS_QUERY);
 
   return (
-    <>
+    <SmoothScroll>
       <Navbar 
         logo={settings?.logo} 
         phone={settings?.contact?.phone}
@@ -24,6 +25,6 @@ export default async function SiteLayout({
       </main>
       <WhatsAppButton phone={settings?.contact?.phone} />
       <Footer />
-    </>
+    </SmoothScroll>
   );
 }
