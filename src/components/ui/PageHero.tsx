@@ -11,7 +11,7 @@ export function PageHero({ title, subtitle, className }: PageHeroProps) {
     <section
       className={cn(
         "relative w-full min-h-[30vh] md:min-h-[35vh] pt-24 pb-16 flex items-center justify-center overflow-hidden",
-        "bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950",
+        "bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950",
         className
       )}
     >
@@ -23,7 +23,7 @@ export function PageHero({ title, subtitle, className }: PageHeroProps) {
           {title}
         </h1>
         {subtitle && (
-          <p className="text-emerald-100/80 text-lg md:text-xl max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in-up"
+          <p className="text-neutral-300 text-lg md:text-xl max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in-up"
              style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
             {subtitle}
           </p>

@@ -22,7 +22,7 @@ export default async function BlogPage() {
 
   return (
     <div className="bg-neutral-50 min-h-screen">
-      <PageHero title="Blog" />
+      <PageHero title="Blog" subtitle='Kereste fiyatları, palet ölçüleri, inşaatlık kereste ve ahşap ürünlere dair güncel piyasa analizleri, teknik rehberler ve sektörel bilgiler.'/>
 
       <section className="container mx-auto px-4 py-16 md:py-24">
         {posts && posts.length > 0 ? (

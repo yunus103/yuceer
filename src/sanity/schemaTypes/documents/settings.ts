@@ -22,6 +22,11 @@ export const settings = defineType({
       name: "favicon",
       title: "Favicon",
       type: "image",
+      options: {
+        accept: "image/png, image/svg+xml, image/jpeg",
+      },
+      description:
+        "Lütfen .png, .jpg veya .svg formatında bir kare görsel yükleyin (.ico dosyaları Sanity tarafından desteklenmez). (Sosyal medya ikonlarında da bu kullanılacaktır)",
     }),
     defineField({
       name: "socials",

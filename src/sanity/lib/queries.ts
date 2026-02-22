@@ -4,6 +4,7 @@ export const SETTINGS_QUERY = defineQuery(`
   *[_type == "settings" && _id == "settings"][0] {
     siteTitle,
     "logo": logo.asset->url,
+    "favicon": favicon.asset->url,
     socials,
     contact {
       address,
