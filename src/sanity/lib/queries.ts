@@ -19,7 +19,7 @@ export const SETTINGS_QUERY = defineQuery(`
 `);
 
 export const ALL_PRODUCTS_QUERY = defineQuery(`
-  *[_type == "product"] {
+  *[_type == "product"] | order(coalesce(order, 999) asc, _createdAt desc) {
     _id,
     title,
     shortDescription,
@@ -58,7 +58,7 @@ export const HOME_PAGE_QUERY = defineQuery(`
       "historyImage": historyImage.asset->url,
       foundingYear
     },
-    "products": *[_type == "product"] | order(_createdAt desc)[0...6] {
+    "products": *[_type == "product"] | order(coalesce(order, 999) asc, _createdAt desc)[0...6] {
       _id,
       title,
       shortDescription,
@@ -154,7 +154,7 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`
 `);
 
 export const RELATED_PRODUCTS_QUERY = defineQuery(`
-  *[_type == "product" && slug.current != $slug] | order(_createdAt desc)[0...3] {
+  *[_type == "product" && slug.current != $slug] | order(coalesce(order, 999) asc, _createdAt desc)[0...3] {
     _id,
     title,
     shortDescription,

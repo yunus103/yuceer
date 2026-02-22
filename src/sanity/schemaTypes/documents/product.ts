@@ -22,6 +22,14 @@ export const product = defineType({
       },
     }),
     defineField({
+      name: "order",
+      title: "Sıra",
+      type: "number",
+      description:
+        "Ana sayfa ve ürünler sayfasındaki sıralamayı belirler. (Örn: 1 en önce çıkar)",
+      initialValue: 99,
+    }),
+    defineField({
       name: "shortDescription",
       title: "Kısa Açıklama",
       type: "text",

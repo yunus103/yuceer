@@ -34,13 +34,7 @@ export default function ProductCard({ id, title, shortDescription, category, ima
           </div>
         )}
 
-        {/* Badges Overlay */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-md rounded-lg text-[11px] font-black text-neutral-800 shadow-sm uppercase tracking-widest border border-white/20">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>{category || 'Kızılçam'}</span>
-          </div>
-        </div>
+
         
         {/* Subtle Bottom Gradient */}
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />

@@ -180,7 +180,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 <div className="flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors">
                   <ShieldCheck className="w-6 h-6 text-emerald-600 mb-2" />
                   <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">Hammadde</span>
-                  <span className="text-sm font-bold text-neutral-800 mt-1">Kızılçam</span>
+                  <span className="text-sm font-bold text-neutral-800 mt-1">Kızılçam, Sedir, Karaçam</span>
                 </div>
                 <div className="flex flex-col items-center justify-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 text-center hover:bg-neutral-100 transition-colors">
                   <Tag className="w-6 h-6 text-emerald-600 mb-2" />
