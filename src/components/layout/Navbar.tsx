@@ -68,7 +68,7 @@ export default function Navbar({ logo, phone, phone2, email }: NavbarProps) {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-10 lg:gap-12">
+          <nav className="hidden lg:flex items-center gap-8 xl:gap-12">
             {navLinks.filter(l => l.href !== '/iletisim').map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
               return (
@@ -96,7 +96,7 @@ export default function Navbar({ logo, phone, phone2, email }: NavbarProps) {
           </nav>
 
           {/* Right Actions / CTA */}
-          <div className="hidden md:flex items-center">
+          <div className="hidden lg:flex items-center">
              <Link 
                href="/iletisim"
                className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-full text-[13px] font-bold uppercase tracking-widest transition-all duration-300 shadow-lg shadow-emerald-900/20 hover:shadow-emerald-900/40 hover:-translate-y-0.5 active:translate-y-0"
@@ -107,7 +107,7 @@ export default function Navbar({ logo, phone, phone2, email }: NavbarProps) {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden p-2 text-white z-50 relative"
+            className="lg:hidden p-2 text-white z-50 relative"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
@@ -128,14 +128,14 @@ export default function Navbar({ logo, phone, phone2, email }: NavbarProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+              className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
             />
             <MotionDiv
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 bottom-0 w-[280px] bg-dark-bg z-50 p-6 shadow-2xl md:hidden flex flex-col"
+              className="fixed right-0 top-0 bottom-0 w-[280px] bg-dark-bg z-50 p-6 shadow-2xl lg:hidden flex flex-col"
             >
               <div className="flex justify-end mb-8">
               </div>
