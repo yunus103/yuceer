@@ -134,9 +134,11 @@ export const PRODUCT_BY_SLUG_QUERY = defineQuery(`
     productionType,
     "mainImage": mainImage.asset->url,
     "mainImageAlt": mainImage.alt,
+    "mainImageDisableObjectBottom": mainImage.disableObjectBottom,
     "gallery": gallery[] {
       "url": asset->url,
-      "alt": alt
+      "alt": alt,
+      disableObjectBottom
     },
     "specs": technicalSpecs.rows[] {
       label,

@@ -26,6 +26,7 @@ const sanityImageLoader = ({ src, width, quality }: { src: string; width: number
 interface ProductImage {
   url: string
   alt?: string
+  disableObjectBottom?: boolean
 }
 
 interface ProductGalleryProps {
@@ -103,7 +104,10 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                     alt={img.alt || `${title} - Resim ${index + 1}`}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
-                    className="object-cover object-bottom transition-opacity duration-500"
+                    className={cn(
+                      "object-cover transition-opacity duration-500",
+                      !img.disableObjectBottom ? "object-bottom" : "object-center"
+                    )}
                     priority={index === 0}
                     quality={85}
                     onError={() => handleImageError(index)}
@@ -164,7 +168,10 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                   fill
                   sizes="120px"
                   quality={60}
-                  className="object-cover object-bottom"
+                  className={cn(
+                    "object-cover",
+                    !img.disableObjectBottom ? "object-bottom" : "object-center"
+                  )}
                 />
               </button>
             ))}

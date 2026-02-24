@@ -106,7 +106,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   }
 
   const allImages = [
-    { url: product.mainImage, alt: product.mainImageAlt },
+    { 
+      url: product.mainImage, 
+      alt: product.mainImageAlt, 
+      disableObjectBottom: product.mainImageDisableObjectBottom 
+    },
     ...(product.gallery || [])
   ].filter(img => img.url)
 

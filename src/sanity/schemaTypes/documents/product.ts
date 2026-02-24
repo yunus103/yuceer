@@ -52,6 +52,14 @@ export const product = defineType({
           title: "Alternatif Metin",
           description: "SEO ve erişilebilirlik için görseli açıklayan metin.",
         },
+        {
+          name: "disableObjectBottom",
+          type: "boolean",
+          title: "Alttan Hizalamayı İptal Et (Center/Cover)",
+          description:
+            "Bu görselin altından hizalanması yerine, ortalanmasını istiyorsanız işaretleyin.",
+          initialValue: false,
+        },
       ],
     }),
     defineField({
@@ -67,6 +75,14 @@ export const product = defineType({
               name: "alt",
               type: "string",
               title: "Alternatif Metin",
+            },
+            {
+              name: "disableObjectBottom",
+              type: "boolean",
+              title: "Alttan Hizalamayı İptal Et (Center/Cover)",
+              description:
+                "Galeri içerisindeki bu görselin altından hizalanması yerine, ortalanmasını istiyorsanız işaretleyin.",
+              initialValue: false,
             },
           ],
         },
