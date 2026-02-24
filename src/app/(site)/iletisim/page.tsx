@@ -1,8 +1,8 @@
 import { PageHero } from '@/components/ui/PageHero'
-import { Button } from '@/components/ui/Button'
 import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 import { client } from '@/sanity/lib/client'
 import { SETTINGS_QUERY } from '@/sanity/lib/queries'
+import ContactForm from '@/components/contact/ContactForm'
 
 export default async function ContactPage() {
   const settings = await client.fetch(SETTINGS_QUERY);
@@ -40,31 +40,7 @@ export default async function ContactPage() {
                  <h2 className="text-3xl font-black text-neutral-900 tracking-tight">Bize Ulaşın</h2>
               </div>
               
-              <form className="space-y-6">
-                 <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                       <label className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 ml-1">Adınız Soyadınız</label>
-                       <input type="text" className="w-full px-5 py-4 bg-neutral-50/50 border border-neutral-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" placeholder="Ad Soyad" />
-                    </div>
-                    <div className="space-y-2">
-                       <label className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 ml-1">Telefon Numaranız</label>
-                       <input type="tel" className="w-full px-5 py-4 bg-neutral-50/50 border border-neutral-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" placeholder="0555 123 45 67" />
-                    </div>
-                 </div>
-                 <div className="space-y-2">
-                    <label className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 ml-1">E-posta Adresiniz</label>
-                    <input type="email" className="w-full px-5 py-4 bg-neutral-50/50 border border-neutral-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-sm font-medium" placeholder="ornek@email.com" />
-                 </div>
-                 <div className="space-y-2">
-                    <label className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 ml-1">Mesajınız</label>
-                    <textarea className="w-full px-5 py-4 bg-neutral-50/50 border border-neutral-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white h-36 resize-none transition-all text-sm font-medium" placeholder="Talebiniz veya sorunuz..." />
-                 </div>
-                 <div className="pt-2">
-                    <Button size="lg" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-7 text-sm font-bold uppercase tracking-widest rounded-2xl transition-all shadow-lg shadow-emerald-600/20">
-                       Mesajı Gönder
-                    </Button>
-                 </div>
-              </form>
+              <ContactForm />
            </div>
 
            {/* Contact Info Cards (Right) 2x2 Grid */}
