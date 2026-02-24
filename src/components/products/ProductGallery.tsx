@@ -5,6 +5,24 @@ import { cn } from '@/lib/utils'
 import { Package, ChevronLeft, ChevronRight } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
 
+const sanityImageLoader = ({ src, width, quality }: { src: string; width: number; quality?: number }) => {
+  try {
+    const url = new URL(src)
+    if (url.hostname === 'cdn.sanity.io') {
+      url.searchParams.set('auto', 'format')
+      url.searchParams.set('fit', 'max')
+      url.searchParams.set('w', width.toString())
+      if (quality) {
+        url.searchParams.set('q', quality.toString())
+      }
+      return url.href
+    }
+  } catch (error) {
+    // Ignore invalid URLs
+  }
+  return src
+}
+
 interface ProductImage {
   url: string
   alt?: string
@@ -80,12 +98,14 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                   </div>
                 ) : (
                   <Image
+                    loader={sanityImageLoader}
                     src={img.url}
                     alt={img.alt || `${title} - Resim ${index + 1}`}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
                     className="object-cover object-bottom transition-opacity duration-500"
                     priority={index === 0}
+                    quality={85}
                     onError={() => handleImageError(index)}
                   />
                 )}
@@ -138,10 +158,12 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                 )}
               >
                 <Image
+                  loader={sanityImageLoader}
                   src={img.url}
                   alt={img.alt || `${title} - Küçük Resim ${index + 1}`}
                   fill
-                  sizes="100px"
+                  sizes="120px"
+                  quality={60}
                   className="object-cover object-bottom"
                 />
               </button>
