@@ -43,10 +43,10 @@ export default function Navbar({ logo, phone, phone2, email }: NavbarProps) {
           showBackground ? 'bg-dark-bg shadow-md py-1 md:py-1.5 border-white/5 opacity-99' : 'bg-transparent py-2 md:py-4 border-transparent'
         )}
       >
-        <div className="container mx-auto px-4 flex items-center justify-between">
+        <div className="container mx-auto px-1 md:px-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-1 z-50 group">
               {logo ? (
-                <div className="relative h-20 w-60 md:h-24 md:w-68 transition-all duration-300">
+                <div className="relative h-20 w-60 scale-125 origin-left md:transform-none md:h-24 md:w-72 transition-all duration-300">
                    <Image 
                       src={logo} 
                       alt="Yüceer Logo" 
