@@ -11,8 +11,28 @@ import { HOME_PAGE_QUERY } from '@/sanity/lib/queries'
 export default async function Home() {
   const homeData = await client.fetch(HOME_PAGE_QUERY);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Yüceer Kereste',
+    url: 'https://yuceerkereste.com',
+    description: 'Yüksek kaliteli kereste ve ahşap ürünleri üreten güvenilir iş ortağınız.',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Yüceer Kereste',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://yuceerkereste.com/favicon.ico'
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Hero data={homeData?.home?.hero} />
       <AboutSummary 
         data={homeData?.home?.aboutSection} 

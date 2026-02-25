@@ -3,6 +3,12 @@ import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 import { client } from '@/sanity/lib/client'
 import { SETTINGS_QUERY } from '@/sanity/lib/queries'
 import ContactForm from '@/components/contact/ContactForm'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'İletişim',
+  description: 'Yüceer Kereste ile iletişime geçin. Adres, telefon ve iletişim formu bilgilerimiz.',
+}
 
 export default async function ContactPage() {
   const settings = await client.fetch(SETTINGS_QUERY);

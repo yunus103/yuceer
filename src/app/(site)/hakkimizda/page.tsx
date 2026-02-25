@@ -7,9 +7,13 @@ import { PageHero } from '@/components/ui/PageHero'
 import * as Icons from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-export const metadata: Metadata = {
-  title: 'Hakkımızda | Yüceer Kereste',
-  description: '1995\'ten beri kaliteli kereste ve orman ürünleri tedarikçisi. Ostim Ankara\'da hizmetinizdeyiz.',
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await client.fetch(ABOUT_PAGE_QUERY);
+  const title = data?.seo?.metaTitle || 'Hakkımızda';
+  return {
+    title: title.includes('Yüceer Kereste') ? { absolute: title } : title,
+    description: data?.seo?.metaDescription || '1995\'ten beri kaliteli kereste ve orman ürünleri tedarikçisi. Ankara\'da hizmetinizdeyiz.',
+  }
 }
 
 const portableTextComponents = {

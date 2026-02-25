@@ -8,7 +8,7 @@ import { PageHero } from '@/components/ui/PageHero'
 import Image from 'next/image'
 
 export const metadata = {
-  title: 'Ürünlerimiz | Yüceer Kereste',
+  title: 'Ürünlerimiz',
   description: 'İnşaatlık keresteden dekoratif ürünlere, geniş ürün yelpazemizle projeleriniz için en kaliteli çözümleri sunuyoruz.',
 }
 

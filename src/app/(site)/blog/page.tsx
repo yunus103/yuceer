@@ -7,7 +7,7 @@ import { PageHero } from '@/components/ui/PageHero'
 import { Calendar, ChevronRight } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Blog | Yüceer Kereste',
+  title: 'Blog',
   description: 'Ahşap sektörü, kereste çeşitleri ve inşaat malzemeleri hakkında güncel yazılar ve ipuçları.',
 }
 

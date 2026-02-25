@@ -53,14 +53,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   try {
     const product = await client.fetch(PRODUCT_BY_SLUG_QUERY, { slug })
-    if (!product) return { title: 'Ürün Bulunamadı | Yüceer Kereste' }
+    if (!product) return { title: 'Ürün Bulunamadı' }
 
     const title = product.seo?.metaTitle || product.title
     const description = product.seo?.metaDescription || product.shortDescription || getPlainText(product.description)
     const keywords = product.seo?.keywords
 
     return {
-      title: `${title} | Yüceer Kereste`,
+      title: title.includes('Yüceer Kereste') ? { absolute: title } : title,
       description: description?.substring(0, 160),
       keywords: keywords,
       openGraph: {
@@ -126,9 +126,25 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     }
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.seo?.metaDescription || product.shortDescription || getPlainText(product.description)?.substring(0, 160),
+    image: product.mainImage,
+    brand: {
+      '@type': 'Brand',
+      name: 'Yüceer Kereste',
+    },
+    category: product.category || 'Endüstriyel',
+  };
+
   return (
     <div className="min-h-screen bg-neutral-50">
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Top 2-Column Hero Area */}
       <div className="pt-32 pb-16 bg-white border-b border-neutral-200">
         <div className="container mx-auto px-4 sm:px-6">

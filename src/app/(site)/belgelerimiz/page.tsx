@@ -4,9 +4,13 @@ import { CERTIFICATES_PAGE_QUERY } from '@/sanity/lib/queries'
 import { PageHero } from '@/components/ui/PageHero'
 import CertificatesGrid from '@/components/certificates/CertificatesGrid'
 
-export const metadata: Metadata = {
-  title: 'Belgelerimiz & Sertifikalar | Yüceer Kereste',
-  description: 'Kalite standartlarımızı belgeleyen ulusal ve uluslararası sertifikalarımız.',
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await client.fetch(CERTIFICATES_PAGE_QUERY);
+  const title = data?.seo?.metaTitle || 'Belgelerimiz & Sertifikalar';
+  return {
+    title: title.includes('Yüceer Kereste') ? { absolute: title } : title,
+    description: data?.seo?.metaDescription || 'Kalite standartlarımızı belgeleyen ulusal ve uluslararası sertifikalarımız.',
+  }
 }
 
 export default async function CertificatesPage() {

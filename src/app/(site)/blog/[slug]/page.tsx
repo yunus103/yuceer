@@ -26,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   // Use explicit SEO object if available, otherwise fallback to standard fields
-  const metaTitle = post.seo?.metaTitle || `${post.title} | Blog | Yüceer Kereste`
+  const metaTitle = post.seo?.metaTitle || `${post.title} | Blog`
   const metaDescription = post.seo?.metaDescription || post.excerpt || `${post.title} hakkında detaylı bilgi.`
 
   return {
-    title: metaTitle,
+    title: metaTitle.includes('Yüceer Kereste') ? { absolute: metaTitle } : metaTitle,
     description: metaDescription,
     keywords: post.seo?.keywords || '',
     openGraph: {
@@ -62,8 +62,33 @@ export default async function BlogPostPage({ params }: Props) {
     notFound()
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.seo?.metaDescription || post.excerpt,
+    image: post.seo?.ogImage || post.mainImage,
+    datePublished: post.publishedAt,
+    author: {
+      '@type': 'Person',
+      name: post.author || 'Yüceer Kereste',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Yüceer Kereste',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://yuceerkereste.com/favicon.ico'
+      }
+    }
+  };
+
   return (
     <div className="bg-white min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Short PageHero to maintain consistency */}
       <PageHero title="Blog Detayı" />
 
