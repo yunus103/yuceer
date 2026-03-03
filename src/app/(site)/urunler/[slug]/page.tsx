@@ -128,15 +128,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
+    '@type': 'Service',
     name: product.title,
     description: product.seo?.metaDescription || product.shortDescription || getPlainText(product.description)?.substring(0, 160),
     image: product.mainImage,
-    brand: {
-      '@type': 'Brand',
+    provider: {
+      '@type': 'Organization',
       name: 'Yüceer Kereste',
     },
-    category: product.category || 'Endüstriyel',
+    serviceType: product.category || 'Endüstriyel',
   };
 
   return (
