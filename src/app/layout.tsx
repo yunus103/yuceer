@@ -18,16 +18,19 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Failed to fetch settings for metadata:", error);
   }
 
-  const title = settings?.siteTitle || "Yüceer Kereste";
-  const desc = settings?.footerDescription || "Yüksek kaliteli kereste ve ahşap ürünleri.";
+  const siteTitle = settings?.siteTitle || "Yüceer Kereste";
+  const metaTitle = settings?.seo?.metaTitle || siteTitle;
+  const metaDesc = settings?.seo?.metaDescription || settings?.footerDescription || "Yüksek kaliteli kereste ve ahşap ürünleri.";
   const faviconUrl = settings?.favicon || "/favicon.ico";
+  const ogImageUrl = settings?.seo?.ogImage || faviconUrl;
 
   return {
     title: {
-      default: title,
-      template: `%s | ${title}`,
+      default: metaTitle,
+      template: `%s | ${siteTitle}`,
     },
-    description: desc,
+    description: metaDesc,
+    keywords: settings?.seo?.keywords,
     icons: {
       icon: [
         { url: faviconUrl },
@@ -36,10 +39,10 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: [faviconUrl],
     },
     openGraph: {
-      title,
-      description: desc,
+      title: metaTitle,
+      description: metaDesc,
       images: [
-        { url: faviconUrl, width: 512, height: 512, alt: "Site İkonu" }
+        { url: ogImageUrl, width: 1200, height: 630, alt: metaTitle }
       ],
     }
   };

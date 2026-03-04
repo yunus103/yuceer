@@ -15,7 +15,13 @@ export const SETTINGS_QUERY = defineQuery(`
       mapEmbed
     },
     footerTitle,
-    footerDescription
+    footerDescription,
+    seo {
+      metaTitle,
+      metaDescription,
+      "ogImage": ogImage.asset->url,
+      keywords
+    }
   }
 `);
 
