@@ -16,7 +16,7 @@ export default async function Home() {
     '@type': 'WebSite',
     name: 'Yüceer Kereste',
     url: 'https://yuceerkereste.com',
-    description: 'Yüksek kaliteli kereste ve ahşap ürünleri üreten güvenilir iş ortağınız.',
+    description: '1963’ten bu yana kereste, EPAL ve Turpal palet, inşaatlık kereste ve ahşap cips üretimi. Yüksek kapasiteli tesis ve sertifikalı üretim altyapısı.',
     publisher: {
       '@type': 'Organization',
       name: 'Yüceer Kereste',

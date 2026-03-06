@@ -33,6 +33,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: metaTitle.includes('Yüceer Kereste') ? { absolute: metaTitle } : metaTitle,
     description: metaDescription,
     keywords: post.seo?.keywords || '',
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
     openGraph: {
       title: metaTitle,
       description: metaDescription,

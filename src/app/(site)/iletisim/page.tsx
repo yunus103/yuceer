@@ -8,6 +8,9 @@ import { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'İletişim',
   description: 'Yüceer Kereste ile iletişime geçin. Adres, telefon ve iletişim formu bilgilerimiz.',
+  alternates: {
+    canonical: '/iletisim',
+  },
 }
 
 export default async function ContactPage() {

@@ -25,12 +25,16 @@ export async function generateMetadata(): Promise<Metadata> {
   const ogImageUrl = settings?.seo?.ogImage || faviconUrl;
 
   return {
+    metadataBase: new URL("https://yuceerkereste.com"),
     title: {
       default: metaTitle,
       template: `%s | ${siteTitle}`,
     },
     description: metaDesc,
     keywords: settings?.seo?.keywords,
+    alternates: {
+      canonical: "/",
+    },
     icons: {
       icon: [
         { url: faviconUrl },

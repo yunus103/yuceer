@@ -63,6 +63,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: title.includes('Yüceer Kereste') ? { absolute: title } : title,
       description: description?.substring(0, 160),
       keywords: keywords,
+      alternates: {
+        canonical: `/urunler/${slug}`,
+      },
       openGraph: {
         title: title,
         description: description?.substring(0, 160),

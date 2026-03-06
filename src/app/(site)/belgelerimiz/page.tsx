@@ -10,6 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: title.includes('Yüceer Kereste') ? { absolute: title } : title,
     description: data?.seo?.metaDescription || 'Kalite standartlarımızı belgeleyen ulusal ve uluslararası sertifikalarımız.',
+    alternates: {
+      canonical: '/belgelerimiz',
+    },
   }
 }
 

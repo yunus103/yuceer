@@ -9,6 +9,9 @@ import { Calendar, ChevronRight } from 'lucide-react'
 export const metadata: Metadata = {
   title: 'Blog',
   description: 'Ahşap sektörü, kereste çeşitleri ve inşaat malzemeleri hakkında güncel yazılar ve ipuçları.',
+  alternates: {
+    canonical: '/blog',
+  },
 }
 
 // Function to format the date

@@ -13,6 +13,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: title.includes('Yüceer Kereste') ? { absolute: title } : title,
     description: data?.seo?.metaDescription || '1995\'ten beri kaliteli kereste ve orman ürünleri tedarikçisi. Ankara\'da hizmetinizdeyiz.',
+    alternates: {
+      canonical: '/hakkimizda',
+    },
   }
 }
 

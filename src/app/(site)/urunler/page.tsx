@@ -10,6 +10,9 @@ import Image from 'next/image'
 export const metadata = {
   title: 'Ürünlerimiz',
   description: 'İnşaatlık keresteden dekoratif ürünlere, geniş ürün yelpazemizle projeleriniz için en kaliteli çözümleri sunuyoruz.',
+  alternates: {
+    canonical: '/urunler',
+  },
 }
 
 export default async function ProductsPage() {
