@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail, ArrowUp, Clock } from 'lucide-react'
+import { Facebook, Instagram, Linkedin, MapPin, Phone, Mail, Clock } from 'lucide-react'
 import { client } from "@/sanity/lib/client";
 import { SETTINGS_QUERY } from "@/sanity/lib/queries";
 
@@ -146,9 +146,21 @@ export default async function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-sm">
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+          <p>
             &copy; {new Date().getFullYear()} {siteTitle}. Tüm hakları saklıdır.
+          </p>
+
+          <p>
+            Tasarım ve Geliştirme:{' '}
+            <a 
+              href="https://yaytechstudio.com/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-gray-400 hover:text-white transition-colors underline-offset-4 hover:underline"
+            >
+              Yaytech Studio
+            </a>
           </p>
           
           <ScrollToTopButton />
